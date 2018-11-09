@@ -50,7 +50,7 @@ T.get('search/tweets', searchparams, function(err, data, response) {
             if(tweet.hasOwnProperty('retweeted_status')){
                 createNode(tweetId_str, username, 1);
                 createNode(retweet.id_str, retweet.user.screen_name, 3);
-                res.links.push({source:tweetId_str, target: retweet.id_str, type: 'retweet', value: 1});
+                createLink(tweetId_str, retweet.id_str, 'retweet', 1);
             }
 
             // Reply
@@ -64,29 +64,34 @@ T.get('search/tweets', searchparams, function(err, data, response) {
                 createNode(tweetId_str, username, 1);
                 getTweet(quoted_status_id_str, tweetId_str, 'quote');
             }
-
-            /*
-            Author:
-            Wenn bereits ein Tweet des Authors des momentan betrachteten Tweets existiert,
-            dann füge den aktuell betrachteten Knoten hinzu und verbinde alle bereits vorhandenen
-            Tweets des Authors mit dem aktuell betrachteten Knoten
-             */
-            var user_nodes = res.nodes.filter(function(nodes){ return nodes.username === username });
-
-            if(user_nodes.length > 0){
-                createNode(tweetId_str, username, 1);
-                user_nodes.forEach(function(element) {
-                    if(tweetId_str !== element.id){
-                        res.links.push({source:tweetId_str, target: element.id, type: 'author', value: 10});
-                    }
-                });
-            }
         }
+
+        // Author
+        getAuthorConnections();
 
     } else {
         console.log(err);
     }
 });
+
+
+// Verbindung zwischen zwei Tweets des gleichen Authors herstellen
+function getAuthorConnections(){
+    res.nodes.forEach(function(node1) {
+
+        var user_nodes = res.nodes.filter(function(nodes){ return nodes.username === node1.username});
+
+        if(user_nodes.length > 0){
+            user_nodes.forEach(function(node2) {
+                if(node1.id !== node2.id){
+                    // zweiseitige verbindung
+                    createLink(node1.id, node2.id, 'author', 10);
+                    createLink(node2.id, node1.id, 'author', 10);
+                }
+            });
+        }
+    });
+}
 
 
 // Tweet an Hand seiner ID heraussuchen
@@ -97,7 +102,7 @@ function getTweet(tweetID_parent, tweetID_origin, type){
             var tweetId_str = data.id_str;
 
             createNode(tweetId_str, username , 2);
-            res.links.push({source:tweetID_origin, target: tweetId_str, type: type, value: 1});
+            createLink(tweetID_origin, tweetId_str, type, 1);
 
             console.log(tweetId_str + " - " + type);
         }else {
@@ -109,11 +114,26 @@ function getTweet(tweetID_parent, tweetID_origin, type){
 
 // Knoten hinzufügen
 function createNode(tweetID, userName , group){
+    // Link generieren
     var link = "https://twitter.com/" + userName + "/status/" + tweetID;
-
+    //Doppelte suchen
+    var doppelte = res.nodes.filter(function(nodes){ return nodes.id === tweetID });
     // Prüfen, ob der Knoten mit der gewünschten ID bereits vorhanden ist
-    if(! (res.nodes.filter(function(nodes){ return nodes.id === tweetID }).length > 0)){
+    if(doppelte.length === 0){
         res.nodes.push({id:tweetID, username: userName, link:link, group: group});
+    }
+}
+
+
+// Kante hinzufügen
+function createLink(tweetID_source, tweetID_target , type, value){
+    //Doppelte suchen
+    var doppelte = res.links.filter(function(link){
+        return (link.source === tweetID_source && link.target === tweetID_target)
+    });
+    // Prüfen, ob der Link bereits vorhanden ist
+    if(doppelte.length === 0){
+        res.links.push({source:tweetID_source, target: tweetID_target, type: type, value: value});
     }
 }
 
