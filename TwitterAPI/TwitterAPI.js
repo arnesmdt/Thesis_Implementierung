@@ -20,7 +20,12 @@ var res ={
     links: []
 };
 
-searchTweets(searchparams);
+initial = function () {
+    res.nodes = [];
+    res.links = [];
+    searchTweets(searchparams);
+};
+
 
 function searchTweets(searchparams) {
     T.get('search/tweets', searchparams, function (err, data, response) {
@@ -142,5 +147,5 @@ function createLink(tweetID_source, tweetID_target , type, value){
 
 // Exporte des Moduls
 module.exports = {
-    tweetObj: res
+    tweetObj: res, init: initial
 };

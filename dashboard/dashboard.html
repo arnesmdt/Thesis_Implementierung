@@ -10,7 +10,18 @@
 <body>
 
 <h3>Social Networkgraph</h3>
-<svg width="1000" height="700"> </svg>
+
+<div>
+    <p>Suchbegriff eingeben:
+    <input type="text" id="searchTerm">
+    <button type="button" onclick="postSearchrequest()">Absenden</button>
+    <button type="button" onclick="draw()">Anzeige aktualisieren</button>
+    </p>
+</div>
+
+<script type="text/javascript" src="searchrequest.js"></script>
+
+<svg id="graph" width="1000" height="700"> </svg>
 
 <script type="text/javascript" src="graph.js"></script>
 
