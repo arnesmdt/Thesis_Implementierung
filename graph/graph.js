@@ -30,7 +30,7 @@ $.get("http://localhost:3000/tweets", function(data){
         .enter().append("g");
 
     //Wenn Knoten geklickt wird
-    node.on('click' , function(d){ console.log(d.link);});
+    node.on('click' , function(node){ console.log(node.url);});
 
     var circles = node.append("circle")
         .attr("r", 5)

@@ -20,60 +20,62 @@ var res ={
     links: []
 };
 
+searchTweets(searchparams);
 
-T.get('search/tweets', searchparams, function(err, data, response) {
-    // If there is no error, proceed
-    if(!err){
-        // Loop through the returned tweets
-        for(var i = 0; i < data.statuses.length; i++){
-            var tweet = data.statuses[i];
-            var retweet = tweet.retweeted_status;
+function searchTweets(searchparams) {
+    T.get('search/tweets', searchparams, function (err, data, response) {
+        // If there is no error, proceed
+        if (!err) {
+            // Loop through the returned tweets
+            for (var i = 0; i < data.statuses.length; i++) {
+                var tweet = data.statuses[i];
+                var retweet = tweet.retweeted_status;
 
-            var username = tweet.user.screen_name;
-            var tweetId_str = tweet.id_str;
-            var in_reply_to_status_str = tweet.in_reply_to_status_id_str;
-            var quoted_status_id_str = tweet.quoted_status_id_str;
+                var username = tweet.user.screen_name;
+                var tweetId_str = tweet.id_str;
+                var in_reply_to_status_str = tweet.in_reply_to_status_id_str;
+                var quoted_status_id_str = tweet.quoted_status_id_str;
 
-/*
-            result.tweets.push({
-                username: username,
-                tweetId: tweetId,
-                tweetId_str: tweetId_str,
-                in_reply_to_status: in_reply_to_status,
-                quoted_status:quoted_status_id,
-                retweet:retweet,
-                link: link
-            });
-*/
+                /*
+                            result.tweets.push({
+                                username: username,
+                                tweetId: tweetId,
+                                tweetId_str: tweetId_str,
+                                in_reply_to_status: in_reply_to_status,
+                                quoted_status:quoted_status_id,
+                                retweet:retweet,
+                                link: link
+                            });
+                */
 
-            // Retweet
-            if(tweet.hasOwnProperty('retweeted_status')){
-                createNode(tweetId_str, username, 1);
-                createNode(retweet.id_str, retweet.user.screen_name, 3);
-                createLink(tweetId_str, retweet.id_str, 'retweet', 1);
+                // Retweet
+                if (tweet.hasOwnProperty('retweeted_status')) {
+                    createNode(tweetId_str, username, 1);
+                    createNode(retweet.id_str, retweet.user.screen_name, 3);
+                    createLink(tweetId_str, retweet.id_str, 'retweet', 1);
+                }
+
+                // Reply
+                if (in_reply_to_status_str !== null) {
+                    createNode(tweetId_str, username, 1);
+                    getTweet(in_reply_to_status_str, tweetId_str, 'reply');
+                }
+
+                // Qoute
+                if (tweet.hasOwnProperty('quoted_status_id_str')) {
+                    createNode(tweetId_str, username, 1);
+                    getTweet(quoted_status_id_str, tweetId_str, 'quote');
+                }
             }
 
-            // Reply
-            if(in_reply_to_status_str !== null){
-                createNode(tweetId_str, username, 1);
-                getTweet(in_reply_to_status_str, tweetId_str, 'reply');
-            }
+            // Author
+            getAuthorConnections();
 
-            // Qoute
-            if(tweet.hasOwnProperty('quoted_status_id_str')){
-                createNode(tweetId_str, username, 1);
-                getTweet(quoted_status_id_str, tweetId_str, 'quote');
-            }
+        } else {
+            console.log(err);
         }
-
-        // Author
-        getAuthorConnections();
-
-    } else {
-        console.log(err);
-    }
-});
-
+    });
+}
 
 // Verbindung zwischen zwei Tweets des gleichen Authors herstellen
 function getAuthorConnections(){
@@ -115,12 +117,12 @@ function getTweet(tweetID_parent, tweetID_origin, type){
 // Knoten hinzufügen
 function createNode(tweetID, userName , group){
     // Link generieren
-    var link = "https://twitter.com/" + userName + "/status/" + tweetID;
+    var url = "https://twitter.com/" + userName + "/status/" + tweetID;
     //Doppelte suchen
     var doppelte = res.nodes.filter(function(nodes){ return nodes.id === tweetID });
     // Prüfen, ob der Knoten mit der gewünschten ID bereits vorhanden ist
     if(doppelte.length === 0){
-        res.nodes.push({id:tweetID, username: userName, link:link, group: group});
+        res.nodes.push({id:tweetID, username: userName, url:url, group: group});
     }
 }
 
