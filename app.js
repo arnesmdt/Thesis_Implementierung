@@ -20,13 +20,12 @@ app.get('/tweets', function (req, res) {
     res.send(JSON.stringify(tweets.tweetObj));
 });
 
-
 app.post('/search', function(req, res) {
     response = {
         searchTerm:req.body.searchTerm
     };
 
-    tweets.init();
+    tweets.init(response.searchTerm);
 
     res.end(JSON.stringify(response));
 });

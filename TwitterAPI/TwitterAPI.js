@@ -3,12 +3,7 @@ var config = require('./TwitterConfig.js');
 
 var T = new Twitter(config);
 
-// Suchparameter festlegen
-var searchparams = {
-    q: '#wiesbaden',
-    count: 100,
-    lang: 'de'
-};
+
 
 var result = {
     tweets: []
@@ -20,9 +15,17 @@ var res ={
     links: []
 };
 
-initial = function () {
+initial = function (searchTerm) {
+    // Suchparameter festlegen
+    var searchparams = {
+        q: searchTerm,
+        count: 100,
+        lang: 'de'
+    };
+
     res.nodes = [];
     res.links = [];
+
     searchTweets(searchparams);
 };
 
