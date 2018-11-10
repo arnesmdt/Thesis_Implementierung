@@ -7,6 +7,7 @@ Anwendung starten über "npm start"
 
 - express "npm install express"
 - twitter "npm install twitter"
+- body-parser "npm install body-parser"
 
 
 #### Twitter Konfiguration
