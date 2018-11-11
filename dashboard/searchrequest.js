@@ -7,6 +7,5 @@ function postSearchrequest(){
         if(status === "success"){
             document.getElementById("currentSearchTerm").innerHTML = document.getElementById("searchTerm").value;
         }
-            alert("Data: " + data + "\nStatus: " + status);
     });
 }
