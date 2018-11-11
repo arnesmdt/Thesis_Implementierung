@@ -3,26 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <title>Dashboard</title>
+
     <link rel="stylesheet" type="text/css" href="graph.css" media="screen" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 </head>
 <body>
 
-<h3>Social Networkgraph</h3>
+<div class="container">
 
-<div>
-    <p>Suchbegriff eingeben:
-    <input type="text" id="searchTerm">
-    <button type="button" onclick="postSearchrequest()">Absenden</button>
-    <button type="button" onclick="draw()">Anzeige aktualisieren</button>
-    </p>
+    <div class="row" style="padding-bottom: 30px; padding-top: 30px">
+        <div class="col">
+            <h3>Social Networkgraph</h3>
+        </div>
+    </div>
+
+    <div class="row" style="padding-bottom: 30px">
+        <div class="col">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="searchInput">Suchbegriff eingeben</span>
+                </div>
+                <input type="text" class="form-control"  id="searchTerm" aria-describedby="searchInput">
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-secondary" onclick="postSearchrequest()">Absenden</button>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <button type="button" class="btn btn-secondary float-right" onclick="draw()">Anzeige aktualisieren</button>
+        </div>
+    </div>
+
+    <div class="row" style="padding-bottom: 30px">
+        <div class="col-2">
+            <div class="checkbox">
+                <label><input type="checkbox"> Retweets</label>
+            </div>
+        </div>
+        <div class="col-2">
+            <div class="checkbox">
+                <label><input type="checkbox" > Antworten</label>
+            </div>
+        </div>
+        <div class="col-2">
+            <div class="checkbox">
+                <label><input type="checkbox" > Zitate</label>
+            </div>
+        </div>
+        <div class="col-2">
+            <div class="checkbox">
+                <label><input type="checkbox" > Gleiche Authoren</label>
+            </div>
+        </div>
+        <div class="col">
+            <p style="float:right" id="currentSearchTerm">Anzeige aktualisieren</p>
+        </div>
+    </div>
+
+</div>
+
+<div class="container">
+    <div class="row" style="padding-bottom: 30px">
+        <div class="col" style="outline: 1px solid black;">
+            <svg id="graph" width="1000" height="700"> </svg>
+        </div>
+    </div>
 </div>
 
 <script type="text/javascript" src="searchrequest.js"></script>
-
-<svg id="graph" width="1000" height="700"> </svg>
-
 <script type="text/javascript" src="graph.js"></script>
 
 </body>

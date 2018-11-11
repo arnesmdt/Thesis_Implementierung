@@ -113,8 +113,6 @@ function getTweet(tweetID_parent, tweetID_origin, type){
 
             createNode(tweetId_str, username , 2);
             createLink(tweetID_origin, tweetId_str, type, 1);
-
-            console.log(tweetId_str + " - " + type);
         }else {
             console.log(err);
         }
