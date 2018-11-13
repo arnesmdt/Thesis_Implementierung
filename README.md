@@ -9,6 +9,7 @@ Anwendung starten über "npm start"
 - twitter "npm install twitter"
 - body-parser "npm install body-parser"
 
+- sentiment "npm install sentiment"
 
 #### Twitter Konfiguration
 
