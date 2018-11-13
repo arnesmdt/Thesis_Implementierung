@@ -56,15 +56,22 @@ function startSimulation(nodes, links){
         .enter().append("g");
 
 
+    // Popup wird beim über den Knoten Wischen angezeigt
     node.each(function (n) {
         $(this).attr('tabindex', -1); // make node focusable
         $(this).popover({
             html : true,
             title: "Tweet-ID: " + n.id,
-            content: "<b>Username:</b></br>" + n.username + "</br><b>Link:</b></br>" + n.url ,
+            content: "<b>Username:</b></br>" + n.username +
+                     "</br><b>Ort:</b></br>" + n.place +
+                     "</br><b>Anzahl Retweets:</b></br>" + n.retweets +
+                     "</br><b>Anzahl Favoriten:</b></br>" + n.favorites ,
             trigger:"hover" // "focus"
         });
     });
+
+    // Bei Klick auf Knoten Konsolenausgabe
+    node.on('click' , function(node){ console.log(node.url);});
 
 
     var circles = node.append("circle")
