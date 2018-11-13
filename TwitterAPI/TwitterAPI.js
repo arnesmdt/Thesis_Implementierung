@@ -3,12 +3,6 @@ var config = require('./TwitterConfig.js');
 
 var T = new Twitter(config);
 
-
-
-var result = {
-    tweets: []
-};
-
 // Ergebnis-Objekt
 var res ={
     nodes: [],
@@ -20,7 +14,7 @@ initial = function (searchTerm) {
     var searchparams = {
         q: searchTerm,
         count: 100,
-        lang: 'de'
+        lang: 'en'
     };
 
     res.nodes = [];
@@ -28,7 +22,6 @@ initial = function (searchTerm) {
 
     searchTweets(searchparams);
 };
-
 
 function searchTweets(searchparams) {
     T.get('search/tweets', searchparams, function (err, data, response) {
@@ -41,40 +34,29 @@ function searchTweets(searchparams) {
 
                 var username = tweet.user.screen_name;
                 var tweetId_str = tweet.id_str;
+                var tweetText = tweet.text;
                 var in_reply_to_status_str = tweet.in_reply_to_status_id_str;
                 var quoted_status_id_str = tweet.quoted_status_id_str;
 
                 var retweet_count = tweet.retweet_count;
                 var favorite_count = tweet.favorite_count;
 
-                /*
-                            result.tweets.push({
-                                username: username,
-                                tweetId: tweetId,
-                                tweetId_str: tweetId_str,
-                                in_reply_to_status: in_reply_to_status,
-                                quoted_status:quoted_status_id,
-                                retweet:retweet,
-                                link: link
-                            });
-                */
-
                 // Retweet
                 if (tweet.hasOwnProperty('retweeted_status')) {
-                    createNode(tweetId_str, username, favorite_count, retweet_count, 1);
-                    createNode(retweet.id_str, retweet.user.screen_name, retweet.favorite_count, retweet.retweet_count, 3);
+                    createNode(tweetId_str, username, favorite_count, retweet_count, tweetText);
+                    createNode(retweet.id_str, retweet.user.screen_name, retweet.favorite_count, retweet.retweet_count, retweet.text);
                     createLink(tweetId_str, retweet.id_str, 'retweet', 5);
                 }
 
                 // Reply
                 if (in_reply_to_status_str !== null) {
-                    createNode(tweetId_str, username, favorite_count, retweet_count, 1);
+                    createNode(tweetId_str, username, favorite_count, retweet_count, tweetText);
                     getTweet(in_reply_to_status_str, tweetId_str, 'reply');
                 }
 
                 // Qoute
                 if (tweet.hasOwnProperty('quoted_status_id_str')) {
-                    createNode(tweetId_str, username, favorite_count, retweet_count, 1);
+                    createNode(tweetId_str, username, favorite_count, retweet_count, tweetText);
                     getTweet(quoted_status_id_str, tweetId_str, 'quote');
                 }
             }
@@ -91,7 +73,6 @@ function searchTweets(searchparams) {
 // Verbindung zwischen zwei Tweets des gleichen Authors herstellen
 function getAuthorConnections(){
     res.nodes.forEach(function(node1) {
-
         var user_nodes = res.nodes.filter(function(nodes){ return nodes.username === node1.username});
 
         if(user_nodes.length > 0){
@@ -115,8 +96,9 @@ function getTweet(tweetID_parent, tweetID_origin, type){
             var tweetId_str = data.id_str;
             var retweet_count = data.retweet_count;
             var favorite_count = data.favorite_count;
+            var tweetText =  data.text;
 
-            createNode(tweetId_str, username, favorite_count, retweet_count, 2);
+            createNode(tweetId_str, username, favorite_count, retweet_count, tweetText);
             createLink(tweetID_origin, tweetId_str, type, 5);
         }else {
             console.log(err);
@@ -126,14 +108,14 @@ function getTweet(tweetID_parent, tweetID_origin, type){
 
 
 // Knoten hinzufügen
-function createNode(tweetID, userName, retweets, favorites, group){
+function createNode(tweetID, userName, retweets, favorites, tweetText){
     // Link generieren
     var url = "https://twitter.com/" + userName + "/status/" + tweetID;
     //Doppelte suchen
     var doppelte = res.nodes.filter(function(nodes){ return nodes.id === tweetID });
     // Prüfen, ob der Knoten mit der gewünschten ID bereits vorhanden ist
     if(doppelte.length === 0){
-        res.nodes.push({id:tweetID, username: userName, url:url, favorites:favorites, retweets:retweets, group: group});
+        res.nodes.push({id:tweetID, username: userName, url:url, favorites:favorites, retweets:retweets, text: tweetText});
     }
 }
 
@@ -153,5 +135,6 @@ function createLink(tweetID_source, tweetID_target , type, value){
 
 // Exporte des Moduls
 module.exports = {
-    tweetObj: res, init: initial
+    tweetObj: res,
+    init: initial
 };

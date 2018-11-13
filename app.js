@@ -10,14 +10,14 @@ app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 app.use(express.static(path.join(__dirname, '/dashboard')));
 
 var tweets = require("./TwitterAPI/TwitterAPI");
-
+var sentiment = require("./Sentiment/sentiment");
 
 app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, '/dashboard', 'dashboard.html'));
 });
 
 app.get('/tweets', function (req, res) {
-    res.send(JSON.stringify(tweets.tweetObj));
+    res.send(JSON.stringify(sentiment.getSentiment(tweets.tweetObj)));
 });
 
 app.post('/search', function(req, res) {
