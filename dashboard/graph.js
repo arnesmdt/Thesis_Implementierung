@@ -47,7 +47,7 @@ function startSimulation(nodes, links){
         .selectAll("line")
         .data(links)
         .enter().append("line")
-        .attr("stroke-width", function(d) { return Math.sqrt(d.value); });
+        .attr("stroke-width", function(link) { return Math.sqrt(link.value); });
 
     var node = svg.append("g")
         .attr("class", "nodes")
@@ -55,8 +55,17 @@ function startSimulation(nodes, links){
         .data(nodes)
         .enter().append("g");
 
-    //Wenn Knoten geklickt wird
-    node.on('click' , function(node){ console.log(node.url);});
+
+    node.each(function (n) {
+        $(this).attr('tabindex', -1); // make node focusable
+        $(this).popover({
+            html : true,
+            title: "Tweet-ID: " + n.id,
+            content: "<b>Username:</b></br>" + n.username + "</br><b>Link:</b></br>" + n.url ,
+            trigger:"hover" // "focus"
+        });
+    });
+
 
     var circles = node.append("circle")
         .attr("r", 5)
@@ -76,18 +85,6 @@ function startSimulation(nodes, links){
             .on("drag", dragged)
             .on("end", dragended));
 
-    /* Beschriftung der Knoten
-      var lables = node.append("text")
-          .text(function(d) {
-            return d.id;
-          })
-          .attr('x', 6)
-          .attr('y', 3);
-
-
-      node.append("title")
-          .text(function(d) { return d.id; });
-    */
 
     simulation
         .nodes(nodes)
