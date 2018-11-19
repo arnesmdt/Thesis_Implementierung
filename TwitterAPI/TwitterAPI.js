@@ -1,5 +1,6 @@
 const Twitter = require('twitter');
 const config = require('./TwitterConfig.js');
+const sentiment = require("./../Sentiment/sentiment");
 
 const T = new Twitter(config);
 
@@ -8,6 +9,7 @@ let res ={
     nodes: [],
     links: []
 };
+
 
 initial = async function (searchTerm) {
     // Suchparameter festlegen
@@ -20,17 +22,17 @@ initial = async function (searchTerm) {
     res.nodes = [];
     res.links = [];
 
-
     const data = await searchTweets(searchparams);
     const data2 = await resolveTweets(data);
     getAuthorConnections(data2);
     getSentiment();
+    // wenn nach get sentiment noch was passieren soll muss auf getsentiment gewartet werden
 
 };
 
+
 // Ermittelt den Sentiment für alle Knoten
 function getSentiment(){
-    const sentiment = require("./../Sentiment/sentiment");
     res = sentiment.getSentiment(res);
 }
 
@@ -52,6 +54,7 @@ function getAuthorConnections(data){
     });
 }
 
+
 // Tweets an Hand der Suchparameter heraussuchen
 function searchTweets(searchparams) {
     return new Promise((resolve, reject) => {
@@ -64,6 +67,7 @@ function searchTweets(searchparams) {
         });
     });
 }
+
 
 // Tweets verarbeiten
 async function resolveTweets(data) {
@@ -78,30 +82,25 @@ async function resolveTweets(data) {
         const in_reply_to_status_str = tweet.in_reply_to_status_id_str;
         const quoted_status_id_str = tweet.quoted_status_id_str;
 
-        const retweet_count = tweet.retweet_count;
-        const favorite_count = tweet.favorite_count;
-
         // Retweet
         if (tweet.hasOwnProperty('retweeted_status')) {
-            createNode(tweetId_str, username, favorite_count, retweet_count, tweetText);
+            createNode(tweetId_str, username, tweet.favorite_count, tweet.retweet_count, tweetText);
             createNode(retweet.id_str, retweet.user.screen_name, retweet.favorite_count, retweet.retweet_count, retweet.text);
             createLink(tweetId_str, retweet.id_str, 'retweet', 5);
         }
 
         // Reply
         if (in_reply_to_status_str !== null) {
-            createNode(tweetId_str, username, favorite_count, retweet_count, tweetText);
-            // getTweet(in_reply_to_status_str, tweetId_str, 'reply');
-            const data1 = await searchTweet(in_reply_to_status_str, tweetId_str);
-            resolveTweet(data1, 'reply');
+            createNode(tweetId_str, username, tweet.favorite_count, tweet.retweet_count, tweetText);
+            const dataReply = await searchTweet(in_reply_to_status_str, tweetId_str);
+            resolveTweet(dataReply, 'reply');
         }
 
         // Qoute
         if (tweet.hasOwnProperty('quoted_status_id_str')) {
-            createNode(tweetId_str, username, favorite_count, retweet_count, tweetText);
-            // getTweet(quoted_status_id_str, tweetId_str, 'quote');
-            const data2 = await searchTweet(quoted_status_id_str, tweetId_str);
-            resolveTweet(data2, 'quote');
+            createNode(tweetId_str, username, tweet.favorite_count, tweet.retweet_count, tweetText);
+            const dataQoute = await searchTweet(quoted_status_id_str, tweetId_str);
+            resolveTweet(dataQoute, 'quote');
         }
     }
 

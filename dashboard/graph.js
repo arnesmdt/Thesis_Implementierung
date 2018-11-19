@@ -2,11 +2,11 @@ function draw(){
     $("#graph").empty();
 
     $.get("http://localhost:3000/tweets", function(data){
-        var res = JSON.parse(data);
+        const res = JSON.parse(data);
 
-        var nodes = res.nodes;
+        const nodes = res.nodes;
 
-        var checkRetweet, checkReply, checkQoute, checkAuthor = '';
+        let checkRetweet, checkReply, checkQoute, checkAuthor = '';
 
         if(document.getElementById("checkboxRetweet").checked){
             checkRetweet = 'retweet'
@@ -21,8 +21,31 @@ function draw(){
             checkAuthor = 'author'
         }
 
-        var links_filter = res.links.filter(function(links){
-            return links.type === checkRetweet || links.type === checkReply || links.type === checkQoute || links.type === checkAuthor ;
+        const links_filter = res.links.filter(function (links) {
+            return links.type === checkRetweet || links.type === checkReply || links.type === checkQoute || links.type === checkAuthor;
+        });
+
+
+        let checkPositiv, checkNegativ, checkNeutral = false;
+
+        if(document.getElementById("checkboxPositiv").checked){
+            checkPositiv = true; //2
+        }
+        if(document.getElementById("checkboxNegativ").checked){
+            checkNegativ = true; //1
+        }
+        if(document.getElementById("checkboxNeutral").checked){
+            checkNeutral = true; //3
+        }
+
+        nodes.forEach(function (node) {
+            if (node.group === 2 && !checkPositiv) {
+                node['group'] = 0;
+            } else if (node.group === 1 && !checkNegativ) {
+                node['group'] = 0;
+            } else if (node.group === 3 && !checkNeutral) {
+                node['group'] = 0;
+            }
         });
 
         startSimulation(nodes, links_filter);
@@ -31,25 +54,29 @@ function draw(){
 }
 
 function startSimulation(nodes, links){
-    var svg = d3.select("body").select("svg"),
+    const svg = d3.select("body").select("svg"),
         width = +svg.attr("width"),
         height = +svg.attr("height");
 
-    var color = d3.scaleOrdinal(d3.schemeCategory20);
+    const color = d3.scaleOrdinal(d3.schemeCategory20);
 
-    var simulation = d3.forceSimulation()
-        .force("link", d3.forceLink().id(function(d) { return d.id; }))
+    const simulation = d3.forceSimulation()
+        .force("link", d3.forceLink().id(function (d) {
+            return d.id;
+        }))
         .force("charge", d3.forceManyBody().distanceMax(150)) //.strength(-500).distanceMax(30).distanceMin(20)
         .force("center", d3.forceCenter(width / 2, height / 2));
 
-    var link = svg.append("g")
+    const link = svg.append("g")
         .attr("class", "links")
         .selectAll("line")
         .data(links)
         .enter().append("line")
-        .attr("stroke-width", function(link) { return Math.sqrt(link.value); });
+        .attr("stroke-width", function (link) {
+            return Math.sqrt(link.value);
+        });
 
-    var node = svg.append("g")
+    const node = svg.append("g")
         .attr("class", "nodes")
         .selectAll("g")
         .data(nodes)
@@ -75,17 +102,17 @@ function startSimulation(nodes, links){
         window.open(node.url, '_blank');
     });
 
-    var circles = node.append("circle")
+    const circles = node.append("circle")
         .attr("r", 5)
-        .attr("fill", function(d) {
-                if(d.group === 1)
+        .attr("fill", function (d) {
+                if (d.group === 1)
                     return "crimson";
-                else if(d.group === 2)
+                else if (d.group === 2)
                     return "ForestGreen";
-                else if(d.group === 3)
+                else if (d.group === 3)
                     return "DarkOrange";
                 else
-                    return color(d.group);
+                    return "Gainsboro";
             }
         )
         .call(d3.drag()

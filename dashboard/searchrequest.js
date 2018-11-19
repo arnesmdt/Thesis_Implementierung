@@ -1,9 +1,9 @@
 function postSearchrequest(){
-    var searchTerm = document.getElementById("searchTerm").value;
+    const searchTerm = document.getElementById("searchTerm").value;
 
-    var result = {searchTerm: searchTerm}
+    const result = {searchTerm: searchTerm};
 
-    $.post("http://localhost:3000/search", result,function(data, status){
+    $.post("http://localhost:3000/search", result, function(data, status){
         if(status === "success"){
             document.getElementById("currentSearchTerm").innerHTML = document.getElementById("searchTerm").value;
         }
