@@ -1,24 +1,26 @@
-var express = require('express');
-var app = express();
+const express = require('express');
+const path = require('path');
+const bodyParser = require('body-parser');
+const tweets = require("./twitterAPI/twitterAPI");
 
-var path = require('path');
 
-var bodyParser = require('body-parser');
+const app = express();
+
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 app.use(express.static(path.join(__dirname, '/dashboard')));
 
-var tweets = require("./TwitterAPI/TwitterAPI");
-var sentiment = require("./Sentiment/sentiment");
 
 app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, '/dashboard', 'dashboard.html'));
 });
 
+
 app.get('/tweets', function (req, res) {
-    res.send(JSON.stringify(sentiment.getSentiment(tweets.tweetObj)));
+    res.send(JSON.stringify(tweets.tweetObj));
 });
+
 
 app.post('/search', function(req, res) {
     response = {

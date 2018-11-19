@@ -1,17 +1,21 @@
-var Sentiment = require('sentiment');
-var sentiment = new Sentiment();
+const Sentiment = require('sentiment');
+const sentiment = new Sentiment();
 
 getSentiment = function (tweets) {
 // Ergebnis-Objekt
-    var res = tweets;
+    const res = tweets;
 
     res.nodes.forEach(function (node) {
-        var result = sentiment.analyze(node.text);
+        let result = sentiment.analyze(node.text);
+        //result.comparative für normierten wert
 
+        //negativ
         if (result.score < 0)
             node['group'] = 1;
+        // positiv
         else if (result.score > 0)
             node['group'] = 2;
+        // neutral
         else
             node['group'] = 3;
     });
