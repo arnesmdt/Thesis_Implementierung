@@ -11,25 +11,56 @@ let res ={
 };
 
 
-initial = async function (searchTerm) {
-    // Suchparameter festlegen
-    const searchparams = {
-        q: searchTerm,
-        count: 100,
-        lang: 'en'
-    };
-
+initial = async function (searchTerm, searchAmount) {
     res.nodes = [];
     res.links = [];
 
-    const data = await searchTweets(searchparams);
-    const data2 = await resolveTweets(data);
-    getAuthorConnections(data2);
+    let maxnodes = searchAmount;
+    let count = 0;
+    let countTotal = 0;
+
+    let searchparams = {};
+    let lowestId = 9999999999999999999;
+
+    while (countTotal <= maxnodes) {
+
+        if (maxnodes - countTotal >= 100){
+            count = 100;
+            //countTotal = countTotal + count;
+        }
+        else if (maxnodes - countTotal < 100 && maxnodes - countTotal > 0){
+            count = maxnodes - countTotal;
+            //countTotal = countTotal + count;
+        }
+        else
+            break;
+
+        searchparams  = {
+            q: searchTerm,
+            count: count,
+            lang: 'en',
+            max_id: lowestId
+        };
+
+        const data = await searchTweets(searchparams);
+        lowestId = await resolveTweets(data);
+        countTotal = res.nodes.length;
+
+        console.log(countTotal);
+        console.log("Anzahl Knoten: " + res.nodes.length + " Anzahl Kanten: " + res.links.length);
+    }
+
+
+    getAuthorConnections();
     getSentiment();
+
     // wenn nach get sentiment noch was passieren soll muss auf getsentiment gewartet werden
 
 };
 
+function getLowestKey(){
+
+}
 
 // Ermittelt den Sentiment für alle Knoten
 function getSentiment(){
@@ -38,16 +69,16 @@ function getSentiment(){
 
 
 // Verbindung zwischen zwei Tweets des gleichen Authors herstellen
-function getAuthorConnections(data){
-    data.nodes.forEach(function(node1) {
-        const user_nodes = data.nodes.filter(function(nodes){ return nodes.username === node1.username});
+function getAuthorConnections(){
+    res.nodes.forEach(function(node1) {
+        const user_nodes = res.nodes.filter(function(nodes){ return nodes.username === node1.username});
 
         if(user_nodes.length > 0){
             user_nodes.forEach(function(node2) {
                 if(node1.id !== node2.id){
                     // zweiseitige verbindung
-                    createLink(node1.id, node2.id, 'author', 10);
-                    createLink(node2.id, node1.id, 'author', 10);
+                    createLink(node1.id, node2.id, 'author', 5);
+                    createLink(node2.id, node1.id, 'author', 5);
                 }
             });
         }
@@ -71,6 +102,7 @@ function searchTweets(searchparams) {
 
 // Tweets verarbeiten
 async function resolveTweets(data) {
+    let lowestId = 9999999999999999999;
     // Loop through the returned tweets
     for (let i = 0; i < data.statuses.length; i++) {
         const tweet = data.statuses[i];
@@ -82,29 +114,34 @@ async function resolveTweets(data) {
         const in_reply_to_status_str = tweet.in_reply_to_status_id_str;
         const quoted_status_id_str = tweet.quoted_status_id_str;
 
+        createNode(tweetId_str, username, tweet.favorite_count, tweet.retweet_count, tweetText);
+
         // Retweet
         if (tweet.hasOwnProperty('retweeted_status')) {
-            createNode(tweetId_str, username, tweet.favorite_count, tweet.retweet_count, tweetText);
+            // createNode(tweetId_str, username, tweet.favorite_count, tweet.retweet_count, tweetText);
             createNode(retweet.id_str, retweet.user.screen_name, retweet.favorite_count, retweet.retweet_count, retweet.text);
             createLink(tweetId_str, retweet.id_str, 'retweet', 5);
         }
 
         // Reply
         if (in_reply_to_status_str !== null) {
-            createNode(tweetId_str, username, tweet.favorite_count, tweet.retweet_count, tweetText);
+            // createNode(tweetId_str, username, tweet.favorite_count, tweet.retweet_count, tweetText);
             const dataReply = await searchTweet(in_reply_to_status_str, tweetId_str);
             resolveTweet(dataReply, 'reply');
         }
 
         // Qoute
         if (tweet.hasOwnProperty('quoted_status_id_str')) {
-            createNode(tweetId_str, username, tweet.favorite_count, tweet.retweet_count, tweetText);
+            // createNode(tweetId_str, username, tweet.favorite_count, tweet.retweet_count, tweetText);
             const dataQoute = await searchTweet(quoted_status_id_str, tweetId_str);
             resolveTweet(dataQoute, 'quote');
         }
+
+        if(tweet.id < lowestId)
+            lowestId = tweet.id;
     }
 
-    return res;
+    return lowestId;
 }
 
 

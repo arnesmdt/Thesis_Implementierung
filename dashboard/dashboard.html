@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Dashboard</title>
 
-    <link rel="stylesheet" type="text/css" href="graph.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="graph/graph.css" media="screen" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
     <script src="https://d3js.org/d3.v5.min.js"></script>
@@ -16,70 +16,80 @@
 
 <div class="container">
 
-    <div class="row" style="padding-bottom: 30px; padding-top: 30px">
-        <div class="col">
-            <h3>Social Networkgraph</h3>
-        </div>
-    </div>
 
-    <div class="row" style="padding-bottom: 30px">
-        <div class="col">
+    <div class="row" style="padding-bottom: 30px;padding-top: 30px">
+        <div class="col-6">
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="searchInput">Suchbegriff eingeben</span>
                 </div>
                 <input type="text" class="form-control"  id="searchTerm" aria-describedby="searchInput">
-                <div class="input-group-append">
-                    <button type="button" class="btn btn-secondary" onclick="postSearchrequest()">Absenden</button>
+            </div>
+        </div>
+        <div class="col-3" style="display: flex;align-items: center;">
+        <input type="range" class="custom-range" min="0" max="500" step="10" id="searchRange" value="100" oninput="searchRangeOutput.value = searchRange.value">
+        </div>
+        <div class="col-2" style="display: flex;align-items: center;">
+            <span class="badge badge-pill badge-primary">Anzahl Tweets ~ <output id="searchRangeOutput">100</output></span>
+        </div>
+        <div class="col-1">
+            <button type="button" class="btn btn-secondary float-right" onclick="postSearchrequest()">Absenden</button>
+        </div>
+    </div>
+
+    <div class="row" style="padding-bottom: 30px">
+        <div class="col-3" >
+            <div class="card" style="border: none">
+                <button class="btn btn-outline-secondary" type="button" data-toggle="collapse" data-target="#edges" aria-expanded="true" aria-controls="edges">
+                    Verbindungen
+                </button>
+                <div class="collapse" id="edges">
+                    <div class="card-body">
+                        <div class="checkbox">
+                            <label><input type="checkbox" id="checkboxRetweet" checked> Retweets</label>
+                        </div>
+                        <div class="checkbox">
+                            <label><input type="checkbox" id="checkboxReply" checked> Antworten</label>
+                        </div>
+                        <div class="checkbox">
+                            <label><input type="checkbox" id="checkboxQoute" checked> Zitate</label>
+                        </div>
+                        <div class="checkbox">
+                            <label><input type="checkbox" id="checkboxAuthor" checked> Gleiche Autoren</label>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col">
+        <div class="col-3" >
+            <div class="card" style="border: none">
+                <button class="btn btn-outline-secondary" type="button" data-toggle="collapse" data-target="#nodes" aria-expanded="true" aria-controls="nodes">
+                       Stimmungen
+                </button>
+                <div class="collapse" id="nodes">
+                    <div class="card-body">
+                        <div class="checkbox">
+                            <label style="color:ForestGreen"><input type="checkbox" id="checkboxPositiv" checked> Positive Beiträge</label>
+                        </div>
+                        <div class="checkbox">
+                            <label style="color:crimson"><input type="checkbox" id="checkboxNegativ" checked> Negative Beiträge</label>
+                        </div>
+                        <div class="checkbox">
+                            <label style="color:DarkOrange"><input type="checkbox" id="checkboxNeutral" checked> Neutrale Beiträge</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <select class="custom-select" id="seperateNodes">
+                <option selected value="0">Einzelne Knoten ausblenden</option>
+                <option value="1">Einzelne Knoten einblenden</option>
+            </select>
+        </div>
+        <div class="col-1"></div>
+        <div class="col-2">
             <button type="button" class="btn btn-secondary float-right" onclick="draw()">Anzeige aktualisieren</button>
-        </div>
-    </div>
-
-    <div class="row" style="padding-bottom: 30px">
-        <div class="col-2">
-            <div class="checkbox">
-                <label><input type="checkbox" id="checkboxRetweet" checked> Retweets</label>
-            </div>
-        </div>
-        <div class="col-2">
-            <div class="checkbox">
-                <label><input type="checkbox" id="checkboxReply" checked> Antworten</label>
-            </div>
-        </div>
-        <div class="col-2">
-            <div class="checkbox">
-                <label><input type="checkbox" id="checkboxQoute" checked> Zitate</label>
-            </div>
-        </div>
-        <div class="col-2">
-            <div class="checkbox">
-                <label><input type="checkbox" id="checkboxAuthor" checked> Gleiche Autoren</label>
-            </div>
-        </div>
-    </div>
-
-    <div class="row" style="padding-bottom: 30px">
-        <div class="col-2">
-            <div class="checkbox">
-                <label><input type="checkbox" id="checkboxPositiv" checked> Positive Beiträge</label>
-            </div>
-        </div>
-        <div class="col-2">
-            <div class="checkbox">
-                <label><input type="checkbox" id="checkboxNegativ" checked> Negative Beiträge</label>
-            </div>
-        </div>
-        <div class="col-2">
-            <div class="checkbox">
-                <label><input type="checkbox" id="checkboxNeutral" checked> Neutrale Beiträge</label>
-            </div>
-        </div>
-        <div class="col">
-            <p style="float:right" id="currentSearchTerm">...</p>
         </div>
     </div>
 </div>
@@ -92,8 +102,9 @@
     </div>
 </div>
 
+<script type="text/javascript" src="dashboard.js"></script>
 <script type="text/javascript" src="searchrequest.js"></script>
-<script type="text/javascript" src="graph.js"></script>
+<script type="text/javascript" src="graph/graph.js"></script>
 
 </body>
 </html>

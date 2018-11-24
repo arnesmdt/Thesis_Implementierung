@@ -24,10 +24,11 @@ app.get('/tweets', function (req, res) {
 
 app.post('/search', function(req, res) {
     response = {
-        searchTerm:req.body.searchTerm
+        searchTerm:req.body.searchTerm,
+        searchAmount:req.body.searchAmount
     };
 
-    tweets.init(response.searchTerm);
+    tweets.init(response.searchTerm, response.searchAmount);
 
     res.end(JSON.stringify(response));
 });
