@@ -1,57 +1,3 @@
-function draw(){
-    $("#graph").empty();
-
-    $.get("http://localhost:3000/tweets", function(data){
-        const res = JSON.parse(data);
-
-        const nodes = res.nodes;
-
-        let checkRetweet, checkReply, checkQoute, checkAuthor = '';
-
-        if(document.getElementById("checkboxRetweet").checked){
-            checkRetweet = 'retweet'
-        }
-        if(document.getElementById("checkboxReply").checked){
-            checkReply = 'reply'
-        }
-        if(document.getElementById("checkboxQoute").checked){
-            checkQoute = 'quote'
-        }
-        if(document.getElementById("checkboxAuthor").checked){
-            checkAuthor = 'author'
-        }
-
-        const links_filter = res.links.filter(function (links) {
-            return links.type === checkRetweet || links.type === checkReply || links.type === checkQoute || links.type === checkAuthor;
-        });
-
-
-        let checkPositiv, checkNegativ, checkNeutral = false;
-
-        if(document.getElementById("checkboxPositiv").checked){
-            checkPositiv = true; //2
-        }
-        if(document.getElementById("checkboxNegativ").checked){
-            checkNegativ = true; //1
-        }
-        if(document.getElementById("checkboxNeutral").checked){
-            checkNeutral = true; //3
-        }
-
-        nodes.forEach(function (node) {
-            if (node.group === 2 && !checkPositiv) {
-                node['group'] = 0;
-            } else if (node.group === 1 && !checkNegativ) {
-                node['group'] = 0;
-            } else if (node.group === 3 && !checkNeutral) {
-                node['group'] = 0;
-            }
-        });
-
-        startSimulation(nodes, links_filter);
-
-    });
-}
 
 function startSimulation(nodes, links){
     const svg = d3.select("body").select("svg"),
@@ -91,8 +37,9 @@ function startSimulation(nodes, links){
             html : true,
             title: "Tweet-ID: " + n.id,
             content: "<b>Username:</b></br>" + n.username +
+                     "</br><b>Text:</b></br>" + n.text +
                      "</br><b>Anzahl Retweets:</b></br>" + n.retweets +
-                     "</br><b>Anzahl Favoriten:</b></br>" + n.favorites ,
+                     "</br><b>Wert des Sentiments:</b></br>" + n.sentiment ,
             trigger:"hover" // "focus"
         });
     });
@@ -102,14 +49,27 @@ function startSimulation(nodes, links){
         window.open(node.url, '_blank');
     });
 
+    // Titel erscheint beim hovern über Kante
+    link.append("title")
+        .text(function(link) { return link.type; });
+
+    /*
+    node.append("text")
+        .text(function(d) {
+            return "test";
+        })
+        .attr('x', 6)
+        .attr('y', 3);
+    */
+
     const circles = node.append("circle")
         .attr("r", 5)
         .attr("fill", function (d) {
-                if (d.group === 1)
+                if (d.sentiment < 0)
                     return "crimson";
-                else if (d.group === 2)
+                else if (d.sentiment > 0 && d.sentiment !== 1000)
                     return "ForestGreen";
-                else if (d.group === 3)
+                else if (d.sentiment === 0)
                     return "DarkOrange";
                 else
                     return "Gainsboro";

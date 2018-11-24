@@ -8,7 +8,9 @@ getSentiment = function (tweets) {
     res.nodes.forEach(function (node) {
         let result = sentiment.analyze(node.text);
         //result.comparative für normierten wert
+        node['sentiment'] = result.score;
 
+        /*
         //negativ
         if (result.score < 0)
             node['group'] = 1;
@@ -18,6 +20,7 @@ getSentiment = function (tweets) {
         // neutral
         else
             node['group'] = 3;
+        */
     });
 
     return res;
