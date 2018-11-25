@@ -11,6 +11,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
 </head>
 <body>
 
@@ -95,16 +96,34 @@
 </div>
 
 <div class="container">
-    <div class="row" style="padding-bottom: 30px">
+    <div class="row" style="padding-bottom: 100px">
         <div class="col border border-secondary rounded">
-            <svg id="graph" width="1000" height="700"> </svg>
+            <svg id="graph" width="1100" height="700"> </svg>
         </div>
     </div>
 </div>
 
-<script type="text/javascript" src="dashboard.js"></script>
-<script type="text/javascript" src="search/searchrequest.js"></script>
+<div class="container">
+    <div class="row">
+        <button type="button" class="btn btn-primary float-right" onclick="createList()">Absenden</button>
+    </div>
+    <div class="row" style="padding-bottom: 100px">
+        <div class="col">
+            <div class="list-group-item list-group-item-action flex-column align-items-start active">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">List group item heading</h5>
+                </div>
+            </div>
+            <div class="list-group" id="listgroup" style="height: 700px; margin-bottom: 10px; overflow-y:scroll;">
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript" src="graph/graph.js"></script>
+<script type="text/javascript" src="search/searchrequest.js"></script>
+<script type="text/javascript" src="graph/graphSimulation.js"></script>
+<script type="text/javascript" src="list/list.js"></script>
 
 </body>
 </html>
