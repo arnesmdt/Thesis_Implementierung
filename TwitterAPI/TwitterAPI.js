@@ -26,11 +26,9 @@ initial = async function (searchTerm, searchAmount) {
 
         if (maxnodes - countTotal >= 100){
             count = 100;
-            //countTotal = countTotal + count;
         }
         else if (maxnodes - countTotal < 100 && maxnodes - countTotal > 0){
             count = maxnodes - countTotal;
-            //countTotal = countTotal + count;
         }
         else
             break;
@@ -44,10 +42,14 @@ initial = async function (searchTerm, searchAmount) {
 
         const data = await searchTweets(searchparams);
         lowestId = await resolveTweets(data);
-        countTotal = res.nodes.length;
 
-        console.log(countTotal);
         console.log("Anzahl Knoten: " + res.nodes.length + " Anzahl Kanten: " + res.links.length);
+
+        // Suche abbrechen, wenn keine weiteren Beiträge gefunden werden
+        if(res.nodes.length < (countTotal + count))
+            break;
+        else
+            countTotal = res.nodes.length;
     }
 
 
@@ -58,9 +60,6 @@ initial = async function (searchTerm, searchAmount) {
 
 };
 
-function getLowestKey(){
-
-}
 
 // Ermittelt den Sentiment für alle Knoten
 function getSentiment(){

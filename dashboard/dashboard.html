@@ -30,10 +30,10 @@
         <input type="range" class="custom-range" min="0" max="500" step="10" id="searchRange" value="100" oninput="searchRangeOutput.value = searchRange.value">
         </div>
         <div class="col-2" style="display: flex;align-items: center;">
-            <span class="badge badge-pill badge-primary">Anzahl Tweets ~ <output id="searchRangeOutput">100</output></span>
+            <span class="badge badge-pill badge-secondary">Anzahl Tweets ~ <output id="searchRangeOutput">100</output></span>
         </div>
         <div class="col-1">
-            <button type="button" class="btn btn-secondary float-right" onclick="postSearchrequest()">Absenden</button>
+            <button type="button" class="btn btn-primary float-right" onclick="postSearchrequest()">Absenden</button>
         </div>
     </div>
 
@@ -89,14 +89,14 @@
         </div>
         <div class="col-1"></div>
         <div class="col-2">
-            <button type="button" class="btn btn-secondary float-right" onclick="draw()">Anzeige aktualisieren</button>
+            <button type="button" class="btn btn-primary float-right" onclick="draw()">Anzeige aktualisieren</button>
         </div>
     </div>
 </div>
 
 <div class="container">
     <div class="row" style="padding-bottom: 30px">
-        <div class="col" style="outline: 1px solid black;">
+        <div class="col border border-secondary rounded">
             <svg id="graph" width="1000" height="700"> </svg>
         </div>
     </div>

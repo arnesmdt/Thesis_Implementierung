@@ -28,7 +28,7 @@ app.post('/search', function(req, res) {
         searchAmount:req.body.searchAmount
     };
 
-    tweets.init(response.searchTerm, response.searchAmount);
+    tweets.init(response.searchTerm, response.searchAmount).catch(err => console.log(err));
 
     res.end(JSON.stringify(response));
 });
