@@ -1,3 +1,4 @@
+// Graph leeren und neu erstellen
 function draw(){
     $("#graph").empty();
 
@@ -25,6 +26,7 @@ function draw(){
             return links.type === checkRetweet || links.type === checkReply || links.type === checkQoute || links.type === checkAuthor;
         });
 
+
         let checkPositiv, checkNegativ, checkNeutral = false;
 
         if(document.getElementById("checkboxPositiv").checked){
@@ -36,7 +38,6 @@ function draw(){
         if(document.getElementById("checkboxNeutral").checked){
             checkNeutral = true;
         }
-
 
         const nodes_filter= [];
         const linksAsString = JSON.stringify(links_filter);
@@ -57,7 +58,6 @@ function draw(){
             } else
                 nodes_filter.push(node);
         });
-
 
         startSimulation(nodes_filter, links_filter);
     });

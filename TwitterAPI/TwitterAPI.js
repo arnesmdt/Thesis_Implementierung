@@ -12,16 +12,20 @@ let res ={
 
 
 initial = async function (searchTerm, searchAmount) {
+    // initiierung
+    let searchparams = {};
+    let lowestId = 9999999999999999999;
     res.nodes = [];
     res.links = [];
 
+    // Wie viele Beiträge sollen maximal gespeichert werden?
     let maxnodes = searchAmount;
+    // Wie viele Beiträge sollen im nächsten Durchlauf herausgesucht werden (Maximum = 100)?
     let count = 0;
+    // Wie viele Beiträge wurden bisher gespeichert?
     let countTotal = 0;
 
-    let searchparams = {};
-    let lowestId = 9999999999999999999;
-
+    // Jeder Durchlauf ist ein Suchauftrag an die Twitter API (Maximum sind 100 Tweets pro Durchlauf)
     while (countTotal <= maxnodes) {
 
         if (maxnodes - countTotal >= 100){
@@ -40,6 +44,7 @@ initial = async function (searchTerm, searchAmount) {
             max_id: lowestId
         };
 
+        // Tweets über Twitter API suchen und verarbeiten
         const data = await searchTweets(searchparams);
         lowestId = await resolveTweets(data);
 
@@ -52,10 +57,8 @@ initial = async function (searchTerm, searchAmount) {
             countTotal = res.nodes.length;
     }
 
-
     getAuthorConnections();
     getSentiment();
-
     // wenn nach get sentiment noch was passieren soll muss auf getsentiment gewartet werden
 
 };
@@ -85,7 +88,7 @@ function getAuthorConnections(){
 }
 
 
-// Tweets an Hand der Suchparameter heraussuchen
+// Tweets an Hand der Suchparameter über die TwitterAPI heraussuchen
 function searchTweets(searchparams) {
     return new Promise((resolve, reject) => {
         T.get('search/tweets', searchparams, (err, data) => {
@@ -99,7 +102,11 @@ function searchTweets(searchparams) {
 }
 
 
-// Tweets verarbeiten
+/*
+Jeder Tweet wird als Knoten gespeichert.
+Die Funktion gibt den ältesten Tweet (kleinste ID) zurück.
+ */
+
 async function resolveTweets(data) {
     let lowestId = 9999999999999999999;
     // Loop through the returned tweets
@@ -117,21 +124,18 @@ async function resolveTweets(data) {
 
         // Retweet
         if (tweet.hasOwnProperty('retweeted_status')) {
-            // createNode(tweetId_str, username, tweet.favorite_count, tweet.retweet_count, tweetText);
             createNode(retweet.id_str, retweet.user.screen_name, retweet.favorite_count, retweet.retweet_count, retweet.text);
             createLink(tweetId_str, retweet.id_str, 'retweet', 5);
         }
 
         // Reply
         if (in_reply_to_status_str !== null) {
-            // createNode(tweetId_str, username, tweet.favorite_count, tweet.retweet_count, tweetText);
             const dataReply = await searchTweet(in_reply_to_status_str, tweetId_str);
             resolveTweet(dataReply, 'reply');
         }
 
         // Qoute
         if (tweet.hasOwnProperty('quoted_status_id_str')) {
-            // createNode(tweetId_str, username, tweet.favorite_count, tweet.retweet_count, tweetText);
             const dataQoute = await searchTweet(quoted_status_id_str, tweetId_str);
             resolveTweet(dataQoute, 'quote');
         }
@@ -144,7 +148,7 @@ async function resolveTweets(data) {
 }
 
 
-// Tweet an Hand seiner ID heraussuchen
+// Einzelnen Tweet an Hand seiner ID über die TwitterAPI heraussuchen
 function searchTweet(tweetID_parent, tweetID_origin) {
     return new Promise((resolve, reject) => {
         T.get('statuses/show/' + tweetID_parent, (err, data) => {
@@ -158,7 +162,7 @@ function searchTweet(tweetID_parent, tweetID_origin) {
 }
 
 
-// Tweet verarbeiten
+// Tweet speichern
 function resolveTweet(data, type){
     const username = data.data.user.screen_name;
     const tweetId_str = data.data.id_str;
