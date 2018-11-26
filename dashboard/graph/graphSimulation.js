@@ -7,9 +7,7 @@ function startSimulation(nodes, links){
     const color = d3.scaleOrdinal(d3.schemeCategory20);
 
     const simulation = d3.forceSimulation()
-        .force("link", d3.forceLink().id(function (d) {
-            return d.id;
-        }))
+        .force("link", d3.forceLink().id(function (d) {return d.id;})) //.distance(20).strength(0.1)
         .force("charge", d3.forceManyBody().distanceMax(100)) //.strength(-500).distanceMax(30).distanceMin(20)
         .force("center", d3.forceCenter(width / 2, height / 2));
 
@@ -46,24 +44,28 @@ function startSimulation(nodes, links){
 
     // Bei Doppelklick auf Knoten Link öffnen
     node.on('dblclick' , function(node){
-        window.open(node.url, '_blank');
+        //window.open(node.url, '_blank');
+        createListGroupItem(node, '#listgroup2');
     });
 
-    // Titel erscheint beim hovern über Kante
-    link.append("title")
-        .text(function(link) { return link.type; });
-
     /*
-    node.append("text")
-        .text(function(d) {
-            return "test";
-        })
-        .attr('x', 6)
-        .attr('y', 3);
-    */
+       // Titel erscheint beim hovern über Kante
+       link.append("title")
+           .text(function(link) { return link.type; });
+
+
+       node.append("text")
+           .text(function(d) {
+               return "test";
+           })
+           .attr('x', 6)
+           .attr('y', 3);
+       */
+
+    const radius = 5;
 
     const circles = node.append("circle")
-        .attr("r", 5)
+        .attr("r", radius)
         .attr("fill", function (d) {
                 if (d.sentiment < 0)
                     return "crimson";
@@ -99,6 +101,9 @@ function startSimulation(nodes, links){
             .attr("transform", function(d) {
                 return "translate(" + d.x + "," + d.y + ")";
             });
+
+        node.attr("cx", function(d) { return d.x = Math.max(radius, Math.min(width - radius, d.x)); })
+            .attr("cy", function(d) { return d.y = Math.max(radius, Math.min(height - radius, d.y)); });
     }
 
 

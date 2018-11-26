@@ -47,19 +47,20 @@ initial = async function (searchTerm, searchAmount) {
         // Tweets über Twitter API suchen und verarbeiten
         const data = await searchTweets(searchparams);
         lowestId = await resolveTweets(data);
-
         console.log("Anzahl Knoten: " + res.nodes.length + " Anzahl Kanten: " + res.links.length);
 
         // Suche abbrechen, wenn keine weiteren Beiträge gefunden werden
-        if(res.nodes.length < (countTotal + count))
+        if(data.statuses.length <= 1)
             break;
         else
             countTotal = res.nodes.length;
     }
 
     getAuthorConnections();
+    setCentrality();
     getSentiment();
     // wenn nach get sentiment noch was passieren soll muss auf getsentiment gewartet werden
+
 
 };
 
@@ -67,6 +68,23 @@ initial = async function (searchTerm, searchAmount) {
 // Ermittelt den Sentiment für alle Knoten
 function getSentiment(){
     res = sentiment.getSentiment(res);
+}
+
+// Zentralitätsmaße berechnen
+function setCentrality(){
+    res.nodes.forEach(function (node) {
+        const indegree = res.links.filter(function (links) {
+            return links.target === node.id;
+        }).length;
+
+        const outdegree = res.links.filter(function (links) {
+            return links.source === node.id;
+        }).length;
+
+        node['indegree'] = indegree;
+        node['outdegree'] = outdegree;
+        node['degree'] = (indegree + outdegree);
+    });
 }
 
 
@@ -119,12 +137,13 @@ async function resolveTweets(data) {
         const tweetText = tweet.text;
         const in_reply_to_status_str = tweet.in_reply_to_status_id_str;
         const quoted_status_id_str = tweet.quoted_status_id_str;
+        const created_at = tweet.created_at;
 
-        createNode(tweetId_str, username, tweet.favorite_count, tweet.retweet_count, tweetText);
+        createNode(tweetId_str, username, tweet.favorite_count, tweet.retweet_count, created_at, tweetText);
 
         // Retweet
         if (tweet.hasOwnProperty('retweeted_status')) {
-            createNode(retweet.id_str, retweet.user.screen_name, retweet.favorite_count, retweet.retweet_count, retweet.text);
+            createNode(retweet.id_str, retweet.user.screen_name, retweet.favorite_count, retweet.retweet_count, retweet.created_at, retweet.text);
             createLink(tweetId_str, retweet.id_str, 'retweet', 5);
         }
 
@@ -169,21 +188,22 @@ function resolveTweet(data, type){
     const retweet_count = data.data.retweet_count;
     const favorite_count = data.data.favorite_count;
     const tweetText =  data.data.text;
+    const created_at = data.data.created_at;
 
-    createNode(tweetId_str, username, favorite_count, retweet_count, tweetText);
+    createNode(tweetId_str, username, favorite_count, retweet_count, created_at, tweetText);
     createLink(data.origin, tweetId_str, type, 5);
 }
 
 
 // Knoten hinzufügen
-function createNode(tweetID, userName, retweets, favorites, tweetText){
+function createNode(tweetID, userName, retweets, favorites, created_at, tweetText){
     // Link generieren
     const url = "https://twitter.com/" + userName + "/status/" + tweetID;
     //Doppelte suchen
     const doppelte = res.nodes.filter(function(nodes){ return nodes.id === tweetID });
     // Prüfen, ob der Knoten mit der gewünschten ID bereits vorhanden ist
     if(doppelte.length === 0){
-        res.nodes.push({id:tweetID, username: userName, url:url, favorites:favorites, retweets:retweets, text: tweetText});
+        res.nodes.push({id:tweetID, username: userName, url:url, favorites:favorites, retweets:retweets, created_at:created_at, text: tweetText});
     }
 }
 
