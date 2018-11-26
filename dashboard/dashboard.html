@@ -17,7 +17,6 @@
 
 <div class="container">
 
-
     <div class="row" style="padding-bottom: 30px;padding-top: 30px">
         <div class="col-6">
             <div class="input-group">
@@ -38,83 +37,93 @@
         </div>
     </div>
 
+</div>
+<div class="container">
     <div class="row" style="padding-bottom: 30px">
-        <div class="col-3" >
-            <div class="card" style="border: none">
-                <button class="btn btn-outline-secondary" type="button" data-toggle="collapse" data-target="#edges" aria-expanded="true" aria-controls="edges">
-                    Verbindungen
-                </button>
-                <div class="collapse" id="edges">
-                    <div class="card-body">
-                        <div class="checkbox">
-                            <label><input type="checkbox" id="checkboxRetweet" checked> Retweets</label>
-                        </div>
-                        <div class="checkbox">
-                            <label><input type="checkbox" id="checkboxReply" checked> Antworten</label>
-                        </div>
-                        <div class="checkbox">
-                            <label><input type="checkbox" id="checkboxQoute" checked> Zitate</label>
-                        </div>
-                        <div class="checkbox">
-                            <label><input type="checkbox" id="checkboxAuthor" checked> Gleiche Autoren</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-3" >
-            <div class="card" style="border: none">
-                <button class="btn btn-outline-secondary" type="button" data-toggle="collapse" data-target="#nodes" aria-expanded="true" aria-controls="nodes">
-                       Stimmungen
-                </button>
-                <div class="collapse" id="nodes">
-                    <div class="card-body">
-                        <div class="checkbox">
-                            <label style="color:ForestGreen"><input type="checkbox" id="checkboxPositiv" checked> Positive Beiträge</label>
-                        </div>
-                        <div class="checkbox">
-                            <label style="color:crimson"><input type="checkbox" id="checkboxNegativ" checked> Negative Beiträge</label>
-                        </div>
-                        <div class="checkbox">
-                            <label style="color:DarkOrange"><input type="checkbox" id="checkboxNeutral" checked> Neutrale Beiträge</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-3">
-            <select class="custom-select" id="seperateNodes">
-                <option selected value="0">Einzelne Knoten ausblenden</option>
-                <option value="1">Einzelne Knoten einblenden</option>
-            </select>
-        </div>
-        <div class="col-1"></div>
-        <div class="col-2">
-            <button type="button" class="btn btn-primary float-right" onclick="draw()">Anzeige aktualisieren</button>
-        </div>
-    </div>
-</div>
-
-<div class="container">
-    <div class="row" style="padding-bottom: 100px">
-        <div class="col border border-secondary rounded">
-            <svg id="graph" width="1100" height="700"> </svg>
-        </div>
-    </div>
-</div>
-
-<div class="container">
-    <div class="row">
-        <button type="button" class="btn btn-primary float-right" onclick="createList()">Absenden</button>
-    </div>
-    <div class="row" style="padding-bottom: 100px">
         <div class="col">
-            <div class="list-group-item list-group-item-action flex-column align-items-start active">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">List group item heading</h5>
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link active" id="nav-graph-tab" data-toggle="tab" href="#nav-graph" role="tab" aria-controls="nav-home" aria-selected="true">Graph</a>
+                    <a class="nav-item nav-link" id="nav-list-tab" data-toggle="tab" href="#nav-list" role="tab" aria-controls="nav-profile" aria-selected="false">Liste</a>
                 </div>
-            </div>
-            <div class="list-group" id="listgroup" style="height: 700px; margin-bottom: 10px; overflow-y:scroll;">
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-graph" role="tabpanel" aria-labelledby="nav-home-tab">
+                    <div class="row" style="padding-bottom: 30px;padding-top: 30px">
+                        <div class="col-3" >
+                            <div class="card" style="border: none">
+                                <button class="btn btn-outline-secondary" type="button" data-toggle="collapse" data-target="#edges" aria-expanded="true" aria-controls="edges">
+                                    Verbindungen
+                                </button>
+                                <div class="collapse" id="edges">
+                                    <div class="card-body">
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" id="checkboxRetweet" checked> Retweets</label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" id="checkboxReply" checked> Antworten</label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" id="checkboxQoute" checked> Zitate</label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" id="checkboxAuthor" checked> Gleiche Autoren</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3" >
+                            <div class="card" style="border: none">
+                                <button class="btn btn-outline-secondary" type="button" data-toggle="collapse" data-target="#nodes" aria-expanded="true" aria-controls="nodes">
+                                    Stimmungen
+                                </button>
+                                <div class="collapse" id="nodes">
+                                    <div class="card-body">
+                                        <div class="checkbox">
+                                            <label style="color:ForestGreen"><input type="checkbox" id="checkboxPositiv" checked> Positive Beiträge</label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label style="color:crimson"><input type="checkbox" id="checkboxNegativ" checked> Negative Beiträge</label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label style="color:DarkOrange"><input type="checkbox" id="checkboxNeutral" checked> Neutrale Beiträge</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <select class="custom-select" id="seperateNodes">
+                                <option selected value="0">Einzelne Knoten ausblenden</option>
+                                <option value="1">Einzelne Knoten einblenden</option>
+                            </select>
+                        </div>
+                        <div class="col-1"></div>
+                        <div class="col-2">
+                            <button type="button" class="btn btn-primary float-right" onclick="draw()">Graph aktualisieren</button>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-bottom: 100px">
+                        <div class="col border border-secondary rounded">
+                            <svg id="graph" width="1100" height="700"> </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="nav-list" role="tabpanel" aria-labelledby="nav-profile-tab">
+                    <div class="row" style="padding-bottom: 100px;padding-top: 30px"">
+                        <div class="col">
+                            <div class="list-group-item list-group-item-action flex-column align-items-start active">
+                                <div class="d-flex justify-content-between" style="display: flex;align-items: center;">
+                                    <h5 class="align-middle">Informationen zu den relevantesten Beiträgen</h5>
+                                    <button type="button" class="btn btn btn-light float-right" onclick="createList()">Liste aktualisieren</button>
+                                </div>
+                            </div>
+                            <div class="list-group" id="listgroup" style="height: 700px; margin-bottom: 10px; overflow-y:scroll;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
