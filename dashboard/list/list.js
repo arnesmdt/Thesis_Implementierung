@@ -7,7 +7,7 @@ function createList(){
         const nodes = res.nodes;
         const links = res.links;
 
-        // nach Anzahl Retweets sortieren
+        // nach Anzahl Verbindungen sortieren
         nodes.sort(function(a, b) {
             return b.degree - a.degree;
         });
@@ -16,22 +16,22 @@ function createList(){
         for(i = 0; (i < nodes.length - 1 && i < 50); i++){
             createListGroupItem(nodes[i], '#listgroup1');
         }
-
-        /*
-        nodes.forEach(function (node) {
-            createListGroupItem(node);
-        });
-        */
     });
 }
 
+
 function createListGroupItem(node, listgroup){
-    $(listgroup).append("<div class='list-group-item flex-column align-items-start'>" +
-        "<div class='d-flex w-100 justify-content-between'>" +
+
+    let listGroupItem = "<div class='list-group-item flex-column align-items-start' id ='" + node.id + "'>" +
+        "<div class='d-flex w-100 justify-content-between' style='padding-bottom: 10px'>" +
         "<h5 class='mb-1'>Username: " + node.username + "</h5> " +
-        "<small class='text-muted'>" + node.created_at + "</small> " +
-        "<button type='button' class='close' aria-label='Close' onclick='deleteListItem()'><span aria-hidden='true'>&times;</span></button></div>" +
-        "<div class='row'>" +
+        "<small class='text-muted'>" + node.created_at + "</small> ";
+
+    if (listgroup === '#listgroup2'){
+        listGroupItem = listGroupItem + "<button type='button' class='close' aria-label='Close' onclick='deleteListItem()'><span aria-hidden='true'>&times;</span></button>";
+    }
+
+    listGroupItem = listGroupItem + "</div><div class='row'>" +
         "<div class='col-11'>" +
         "<p >" + node.text + "</p> " +
         "</div></div>" +
@@ -48,15 +48,57 @@ function createListGroupItem(node, listgroup){
         "<div class='col-2'><p>Out-Degree: <span style='font-weight: bold;'>" + node.outdegree + "</span></p></div>" +
         "</div>" +
         "<small><a href='" + node.url + "'>" + node.url + "</a></small>" +
-        "</div>");
+        "</div>";
+
+    $(listgroup).append(listGroupItem);
+
 }
+
+/*
+function labelNode(tweetid){
+    const nodes = document.getElementsByClassName("nodes")[0].children;
+    console.log(nodes);
+    console.log(nodes[0].getAttribute('id'));
+
+    for (i = 0; i < nodes.length; i++){
+        if(nodes[i].getAttribute('id') === tweetid){
+            nodes[i].children[0].style.stroke =  "#fff"
+        }
+    }
+}
+*/
+
 
 function deleteListItem(){
     const parent = document.activeElement.parentElement.parentElement.parentElement;
     const child = document.activeElement.parentElement.parentElement;
+    const childID = child.getAttribute('id');
     parent.removeChild(child);
+
+    const nodes = document.getElementsByClassName("nodes")[0].children;
+
+    for (i = 0; i < nodes.length; i++){
+        if(nodes[i].getAttribute('id') === childID){
+            nodes[i].children[0].style.stroke =  "#fff";
+            const text = nodes[i].children[1];
+            nodes[i].removeChild(text);
+        }
+    }
+
 }
+
 
 function clearList() {
     $("#listgroup2").empty();
+
+    const nodes = document.getElementsByClassName("nodes")[0].children;
+
+    for (i = 0; i < nodes.length; i++){
+        nodes[i].children[0].style.stroke = "#fff";
+
+        if(nodes[i].children[1] !== undefined){
+            const text = nodes[i].children[1];
+            nodes[i].removeChild(text);
+        }
+    }
 }

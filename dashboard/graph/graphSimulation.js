@@ -31,6 +31,7 @@ function startSimulation(nodes, links){
     node.each(function (n) {
         // make node focusable, wird nur bei trigger: focus benötigt
         $(this).attr('tabindex', -1);
+        $(this).attr("id", n.id);
         $(this).popover({
             html : true,
             title: "Tweet-ID: " + n.id,
@@ -42,25 +43,6 @@ function startSimulation(nodes, links){
         });
     });
 
-    // Bei Doppelklick auf Knoten Link öffnen
-    node.on('dblclick' , function(node){
-        //window.open(node.url, '_blank');
-        createListGroupItem(node, '#listgroup2');
-    });
-
-    /*
-       // Titel erscheint beim hovern über Kante
-       link.append("title")
-           .text(function(link) { return link.type; });
-
-
-       node.append("text")
-           .text(function(d) {
-               return "test";
-           })
-           .attr('x', 6)
-           .attr('y', 3);
-       */
 
     const radius = 5;
 
@@ -77,10 +59,27 @@ function startSimulation(nodes, links){
                     return "Gainsboro";
             }
         )
+        .attr("stroke", '#fff')
+        .attr("stroke-width", '1.5px')
         .call(d3.drag()
             .on("start", dragstarted)
             .on("drag", dragged)
             .on("end", dragended));
+
+
+    node.on('dblclick' , function(node){
+
+        createListGroupItem(node, '#listgroup2');
+
+        d3.select(this).append("text")
+            .text(function(d) {
+                return d.username;
+            })
+            .attr('x', 6)
+            .attr('y', 3);
+
+        d3.select(this).select('circle').attr("stroke", '#212529');
+    });
 
 
     simulation
