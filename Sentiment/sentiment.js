@@ -6,14 +6,14 @@ getSentiment = function (tweets) {
     const res = tweets;
 
     res.nodes.forEach(function (node) {
+        //Sentiment bestimmen
         let result = sentiment.analyze(node.text);
-        //result.comparative für normierten wert
+        //Sentimentwert als Knotenattribut speichern
         node['sentiment'] = result.score;
     });
 
     return res;
 };
-
 
 // Exporte des Moduls
 module.exports = {

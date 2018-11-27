@@ -26,8 +26,7 @@ function startSimulation(nodes, links){
         .data(nodes)
         .enter().append("g");
 
-
-    // Popup wird beim über den Knoten Wischen angezeigt
+    // Popup wird beim über den Knoten Wischen angezeigt und Knoten bekommt eine id eingetragen
     node.each(function (n) {
         // make node focusable, wird nur bei trigger: focus benötigt
         $(this).attr('tabindex', -1);
@@ -42,7 +41,6 @@ function startSimulation(nodes, links){
             trigger:"hover" // "focus"
         });
     });
-
 
     const radius = 5;
 
@@ -68,17 +66,9 @@ function startSimulation(nodes, links){
 
 
     node.on('dblclick' , function(node){
-
+        // Listeneintrag erstellen
         createListGroupItem(node, '#listgroup2');
 
-        d3.select(this).append("text")
-            .text(function(d) {
-                return d.username;
-            })
-            .attr('x', 6)
-            .attr('y', 3);
-
-        d3.select(this).select('circle').attr("stroke", '#212529');
     });
 
 
@@ -101,6 +91,7 @@ function startSimulation(nodes, links){
                 return "translate(" + d.x + "," + d.y + ")";
             });
 
+        //Knoten können das svg Element nicht verlassen
         node.attr("cx", function(d) { return d.x = Math.max(radius, Math.min(width - radius, d.x)); })
             .attr("cy", function(d) { return d.y = Math.max(radius, Math.min(height - radius, d.y)); });
     }

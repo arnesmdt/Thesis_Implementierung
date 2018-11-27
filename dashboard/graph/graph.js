@@ -1,5 +1,9 @@
 // Graph leeren und neu erstellen
 function draw(){
+    // bei allen checkbocken markierung entfernen
+    $("input:checkbox", "#listgroup1").attr('checked',false);
+
+    //Graph leeren
     $("#graph").empty();
 
     $.get("http://localhost:3000/tweets", function(data){
@@ -51,12 +55,14 @@ function draw(){
                 node['sentiment'] = 1000;
             }
 
+            //Einzelne Knoten miteinbeziehen bzw. ignorieren
             if (document.getElementById("seperateNodes").value === "0"){
                 if (linksAsString.includes(node.id.toString())){
                     nodes_filter.push(node);
                 }
-            } else
+            } else{
                 nodes_filter.push(node);
+            }
         });
 
         startSimulation(nodes_filter, links_filter);
