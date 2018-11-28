@@ -1,6 +1,6 @@
 ## Thesis_Implementierung
 
-Anwendung starten über "npm start"
+Anwendung starten über "npm start".
 
 
 #### Über npm installierte Libraries:
@@ -12,8 +12,8 @@ Anwendung starten über "npm start"
 
 #### Twitter Konfiguration
 
-Es muss ein Twitter-Developer-Account eine Twitter-APP erstellt werden.
-Keys and tokens der Twitter-APP werden in der Datei twitterConfig.js gespeichert
+Es muss ein Twitter-Developer-Account und dort eine Twitter-APP erstellt werden.
+Keys and Tokens der Twitter-APP werden in der Datei twitterConfig.js gespeichert.
 
 ### Port
 
