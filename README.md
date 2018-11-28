@@ -17,4 +17,4 @@ Keys and tokens der Twitter-APP werden in der Datei twitterConfig.js gespeichert
 
 ### Port
 
-Anwendung über http://localhost:3000/ aufrufen.
+Anwendung im Browser über http://localhost:3000/ aufrufen.
