@@ -14,3 +14,7 @@ Anwendung starten über "npm start"
 
 Es muss ein Twitter-Developer-Account eine Twitter-APP erstellt werden.
 Keys and tokens der Twitter-APP werden in der Datei twitterConfig.js gespeichert
+
+### Port
+
+Anwendung über http://localhost:3000/ aufrufen.
