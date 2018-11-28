@@ -10,6 +10,11 @@ let res ={
     links: []
 };
 
+let output ={
+    nodes: [],
+    links: []
+};
+
 
 initial = async function (searchTerm, searchAmount) {
     // initiierung
@@ -58,9 +63,12 @@ initial = async function (searchTerm, searchAmount) {
 
     getAuthorConnections();
     setCentrality();
-    getSentiment();
-    // wenn nach get sentiment noch was passieren soll muss auf getsentiment gewartet werden
 
+    await getSentiment();
+
+    output.nodes = res.nodes;
+    output.links = res.links;
+    console.log("fertig");
 
 };
 
@@ -153,7 +161,7 @@ async function resolveTweets(data) {
             resolveTweet(dataReply, 'reply');
         }
 
-        // Qoute
+        // Quote
         if (tweet.hasOwnProperty('quoted_status_id_str')) {
             const dataQoute = await searchTweet(quoted_status_id_str, tweetId_str);
             resolveTweet(dataQoute, 'quote');
@@ -223,6 +231,6 @@ function createLink(tweetID_source, tweetID_target , type, value){
 
 // Exporte des Moduls
 module.exports = {
-    tweetObj: res,
+    tweetObj: output,
     init: initial
 };

@@ -67,8 +67,11 @@ function startSimulation(nodes, links){
 
     node.on('dblclick' , function(node){
         // Listeneintrag erstellen
-        createListGroupItem(node, '#listgroup2');
-
+        const added = createListGroupItem(node, '#listgroup2');
+        if(added)
+            alert("Knoten hinzugefügt!");
+        else
+            alert("Knoten bereits vorhanden!");
     });
 
 
