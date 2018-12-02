@@ -1,6 +1,6 @@
 const Twitter = require('twitter');
 const config = require('./twitterConfig.js');
-const sentiment = require("./../Sentiment/sentiment");
+const sentiment = require("../sentiment/sentiment");
 
 const T = new Twitter(config);
 
@@ -72,7 +72,7 @@ let output = {
 };
 
 
-// Ermittelt den Sentiment für alle Knoten
+// Ermittelt den sentiment für alle Knoten
 function getSentiment(){
     res = sentiment.getSentiment(res);
 }

@@ -1,5 +1,6 @@
 
 function startSimulation(nodes, links){
+
     const svg = d3.select("body").select("svg"),
         width = +svg.attr("width"),
         height = +svg.attr("height");
@@ -79,9 +80,9 @@ function startSimulation(nodes, links){
         // Listeneintrag erstellen
         const added = createListGroupItem(node, '#listgroup2');
         if(added)
-            alert("Knoten hinzugefügt!");
+            showalert('Knoten ' + node.id + ' wurde hinzugefügt! ','alert-success');
         else
-            alert("Knoten bereits vorhanden!");
+            showalert('Knoten ' + node.id + ' bereits vorhanden! ','alert-danger');
     });
 
 
