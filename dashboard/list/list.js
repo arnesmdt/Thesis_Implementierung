@@ -101,7 +101,7 @@ function createListGroupItem(node, listgroup){
             "</div></div>" +
             "<div class='row'>" +
             "<div class='col-6'><p>Allgemeine Informationen: </p></div>" +
-            "<div class='col-2'><p>Sentiment: <span style='font-weight: bold;'>" + node.sentiment + "</span></p></div> " +
+            "<div class='col-2'><p>sentiment: <span style='font-weight: bold;'>" + node.sentiment + "</span></p></div> " +
             "<div class='col-2'><p>Retweets: <span style='font-weight: bold;'>" + node.retweets + "</span></p></div> " +
             "<div class='col-2'><p>Favoriten: <span style='font-weight: bold;'>" + node.favorites + "</span></p></div> " +
             "</div>" +

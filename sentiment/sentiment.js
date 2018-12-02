@@ -6,7 +6,7 @@ getSentiment = function (tweets) {
     const res = tweets;
 
     res.nodes.forEach(function (node) {
-        //Sentiment bestimmen
+        //sentiment bestimmen
         let result = sentiment.analyze(node.text);
         //Sentimentwert als Knotenattribut speichern
         node['sentiment'] = result.score;
