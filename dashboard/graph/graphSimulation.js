@@ -16,8 +16,18 @@ function startSimulation(nodes, links){
         .selectAll("line")
         .data(links)
         .enter().append("line")
-        .attr("stroke-width", function (link) {
-            return Math.sqrt(link.value);
+        .attr("stroke-width", Math.sqrt(5))
+        .attr("stroke", function (link) {
+            if (link.value === 1) // Retweet
+                return "MIDNIGHTBLUE";
+            else if (link.value === 2) // Reply
+                return "MEDIUMSLATEBLUE";
+            else if (link.value === 3) // Quote
+                return "DEEPSKYBLUE";
+            else if (link.value === 4) // autor
+                return "LIGHTBLUE";
+            else
+                return "DIMGRAY";
         });
 
     const node = svg.append("g")
@@ -46,15 +56,17 @@ function startSimulation(nodes, links){
 
     const circles = node.append("circle")
         .attr("r", radius)
-        .attr("fill", function (d) {
-                if (d.sentiment < 0)
+        .attr("fill", function (node) {
+                if (node.value === 1)
                     return "crimson";
-                else if (d.sentiment > 0 && d.sentiment !== 1000)
+                else if (node.value === 2)
                     return "ForestGreen";
-                else if (d.sentiment === 0)
+                else if (node.value === 3)
                     return "DarkOrange";
-                else
+                else if (node.value === 4)
                     return "Gainsboro";
+                else
+                    return "GRAY";
             }
         )
         .attr("stroke", '#fff')

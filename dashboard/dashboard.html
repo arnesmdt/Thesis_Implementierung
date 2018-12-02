@@ -16,26 +16,27 @@
 <body>
 
 <div class="container">
-
-    <div class="row" style="padding-bottom: 30px;padding-top: 30px">
-        <div class="col-6">
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="searchInput">Suchbegriff eingeben</span>
+    <form onsubmit="postSearchrequest()">
+        <div class="row" style="padding-bottom: 30px;padding-top: 30px">
+            <div class="col-6">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="searchInput">Suchbegriff eingeben</span>
+                    </div>
+                    <input type="text" class="form-control"  id="searchTerm" aria-describedby="searchInput" required>
                 </div>
-                <input type="text" class="form-control"  id="searchTerm" aria-describedby="searchInput">
+            </div>
+            <div class="col-3" style="display: flex;align-items: center;">
+            <input type="range" class="custom-range" min="0" max="500" step="10" id="searchRange" value="100" oninput="searchRangeOutput.value = searchRange.value">
+            </div>
+            <div class="col-2" style="display: flex;align-items: center;">
+                <span class="badge badge-pill badge-secondary">Anzahl Tweets ~ <output id="searchRangeOutput">100</output></span>
+            </div>
+            <div class="col-1">
+                <button type="submit" class="btn btn-primary float-right">Absenden</button>
             </div>
         </div>
-        <div class="col-3" style="display: flex;align-items: center;">
-        <input type="range" class="custom-range" min="0" max="500" step="10" id="searchRange" value="100" oninput="searchRangeOutput.value = searchRange.value">
-        </div>
-        <div class="col-2" style="display: flex;align-items: center;">
-            <span class="badge badge-pill badge-secondary">Anzahl Tweets ~ <output id="searchRangeOutput">100</output></span>
-        </div>
-        <div class="col-1">
-            <button type="button" class="btn btn-primary float-right" onclick="postSearchrequest()">Absenden</button>
-        </div>
-    </div>
+    </form>
 
 </div>
 <div class="container">
@@ -59,16 +60,19 @@
                                 <div class="collapse" id="edges">
                                     <div class="card-body">
                                         <div class="checkbox">
-                                            <label><input type="checkbox" id="checkboxRetweet" checked> Retweets</label>
+                                            <label style="color:MIDNIGHTBLUE"><input type="checkbox" id="checkboxRetweet" checked> Retweets</label>
                                         </div>
                                         <div class="checkbox">
-                                            <label><input type="checkbox" id="checkboxReply" checked> Antworten</label>
+                                            <label style="color:MEDIUMSLATEBLUE"><input type="checkbox" id="checkboxReply" checked> Antworten</label>
                                         </div>
                                         <div class="checkbox">
-                                            <label><input type="checkbox" id="checkboxQoute" checked> Zitate</label>
+                                            <label style="color:DEEPSKYBLUE"><input type="checkbox" id="checkboxQoute" checked> Zitate</label>
                                         </div>
                                         <div class="checkbox">
-                                            <label><input type="checkbox" id="checkboxAuthor" checked> Gleiche Autoren</label>
+                                            <label style="color:LIGHTBLUE"><input type="checkbox" id="checkboxAuthor" checked> Gleiche Autoren</label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" id="checkboxEdgeColor"> Verbindungen färben</label>
                                         </div>
                                     </div>
                                 </div>
@@ -89,6 +93,9 @@
                                         </div>
                                         <div class="checkbox">
                                             <label style="color:DarkOrange"><input type="checkbox" id="checkboxNeutral" checked> Neutrale Beiträge</label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" id="checkboxNodeColor" checked> Beiträge färben</label>
                                         </div>
                                     </div>
                                 </div>

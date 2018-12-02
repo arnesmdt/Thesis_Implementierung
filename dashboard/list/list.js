@@ -1,5 +1,5 @@
 // Markierungen im Graphen hinzufügen oder entfernen, wenn sich eine Checkbox verändert
-$("body").on("change", "input:checkbox", function(){
+$("#listgroup1").on("change", "input:checkbox", function(){
     if($(this).prop('checked')){
         //ID des Listeneintrags bestimmen. Diese ist gleich der TweetID
         const child = $(this).parent().parent().parent().parent();

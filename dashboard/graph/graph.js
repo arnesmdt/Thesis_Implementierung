@@ -11,6 +11,7 @@ function draw(){
         const res = JSON.parse(data);
 
         const nodes = res.nodes;
+        const links = res.links;
 
         let checkRetweet, checkReply, checkQoute, checkAuthor = '';
 
@@ -26,8 +27,13 @@ function draw(){
         if(document.getElementById("checkboxAuthor").checked){
             checkAuthor = 'author'
         }
+        if(!document.getElementById("checkboxEdgeColor").checked){
+            links.forEach(function (link) {
+                link['value'] = 0;
+            });
+        }
 
-        const links_filter = res.links.filter(function (links) {
+        const links_filter = links.filter(function (links) {
             return links.type === checkRetweet || links.type === checkReply || links.type === checkQoute || links.type === checkAuthor;
         });
 
@@ -48,12 +54,14 @@ function draw(){
         const linksAsString = JSON.stringify(links_filter);
 
         nodes.forEach(function (node) {
-            if (node.sentiment > 0 && !checkPositiv) {
-                node['sentiment'] = 1000;
-            } else if (node.sentiment < 0 && !checkNegativ) {
-                node['sentiment'] = 1000;
-            } else if (node.sentiment === 0 && !checkNeutral) {
-                node['sentiment'] = 1000;
+            if (!document.getElementById("checkboxNodeColor").checked) {
+                node['value'] = 0;
+            } else if (node.value === 2 && !checkPositiv) {
+                node['value'] = 4;
+            } else if (node.value === 1 && !checkNegativ) {
+                node['value'] = 4;
+            } else if (node.value === 3 && !checkNeutral) {
+                node['value'] = 4;
             }
 
             //Einzelne Knoten miteinbeziehen bzw. ignorieren
