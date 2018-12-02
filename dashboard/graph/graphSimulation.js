@@ -4,8 +4,6 @@ function startSimulation(nodes, links){
         width = +svg.attr("width"),
         height = +svg.attr("height");
 
-    const color = d3.scaleOrdinal(d3.schemeCategory20);
-
     const simulation = d3.forceSimulation()
         .force("link", d3.forceLink().id(function (d) {return d.id;})) //.distance(20).strength(0.1)
         .force("charge", d3.forceManyBody().distanceMax(100)) //.strength(-500).distanceMax(30).distanceMin(20)

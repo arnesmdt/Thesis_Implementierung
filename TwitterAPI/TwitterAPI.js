@@ -1,22 +1,21 @@
 const Twitter = require('twitter');
-const config = require('./TwitterConfig.js');
+const config = require('./twitterConfig.js');
 const sentiment = require("./../Sentiment/sentiment");
 
 const T = new Twitter(config);
 
 // Ergebnis-Objekt
-let res ={
+res = {
     nodes: [],
     links: []
 };
 
-let output ={
+let output = {
     nodes: [],
     links: []
 };
 
-
-initial = async function (searchTerm, searchAmount) {
+    initial = async function (searchTerm, searchAmount) {
     // initiierung
     let searchparams = {};
     let lowestId = 9999999999999999999;
@@ -105,8 +104,8 @@ function getAuthorConnections(){
             user_nodes.forEach(function(node2) {
                 if(node1.id !== node2.id){
                     // zweiseitige verbindung
-                    createLink(node1.id, node2.id, 'author', 5);
-                    createLink(node2.id, node1.id, 'author', 5);
+                    createLink(node1.id, node2.id, 'author', 4);
+                    createLink(node2.id, node1.id, 'author', 4);
                 }
             });
         }
@@ -152,7 +151,7 @@ async function resolveTweets(data) {
         // Retweet
         if (tweet.hasOwnProperty('retweeted_status')) {
             createNode(retweet.id_str, retweet.user.screen_name, retweet.favorite_count, retweet.retweet_count, retweet.created_at, retweet.text);
-            createLink(tweetId_str, retweet.id_str, 'retweet', 5);
+            createLink(tweetId_str, retweet.id_str, 'retweet', 1);
         }
 
         // Reply
@@ -199,7 +198,10 @@ function resolveTweet(data, type){
     const created_at = data.data.created_at;
 
     createNode(tweetId_str, username, favorite_count, retweet_count, created_at, tweetText);
-    createLink(data.origin, tweetId_str, type, 5);
+    if(type === 'reply')
+        createLink(data.origin, tweetId_str, type, 2);
+    else
+        createLink(data.origin, tweetId_str, type, 3);
 }
 
 
