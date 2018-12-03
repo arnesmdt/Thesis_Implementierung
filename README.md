@@ -1,14 +1,15 @@
 ## Thesis_Implementierung
 
-Anwendung starten über "npm start".
+Anwendung installieren über     "npm install"
+Anwendung starten über          "npm start"
 
 
 #### Über npm installierte Libraries:
 
-- express "npm install express"
-- twitter "npm install twitter"
-- body-parser "npm install body-parser"
-- sentiment "npm install sentiment"
+- express
+- twitter
+- body-parser
+- sentiment
 
 #### Twitter Konfiguration
 
