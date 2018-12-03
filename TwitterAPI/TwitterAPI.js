@@ -5,7 +5,7 @@ const sentiment = require("../sentiment/sentiment");
 const T = new Twitter(config);
 
 // Ergebnis-Objekt
-res = {
+let res = {
     nodes: [],
     links: []
 };
@@ -15,12 +15,14 @@ let output = {
     links: []
 };
 
-    initial = async function (searchTerm, searchAmount) {
+initial = async function (searchTerm, searchAmount) {
     // initiierung
     let searchparams = {};
     let lowestId = 9999999999999999999;
     res.nodes = [];
     res.links = [];
+    output.nodes = [];
+    output.links = [];
 
     // Wie viele Beiträge sollen maximal gespeichert werden?
     let maxnodes = searchAmount;
@@ -71,7 +73,6 @@ let output = {
 
 };
 
-
 // Ermittelt den sentiment für alle Knoten
 function getSentiment(){
     res = sentiment.getSentiment(res);
@@ -94,7 +95,6 @@ function setCentrality(){
     });
 }
 
-
 // Verbindung zwischen zwei Tweets des gleichen Authors herstellen
 function getAuthorConnections(){
     res.nodes.forEach(function(node1) {
@@ -112,7 +112,6 @@ function getAuthorConnections(){
     });
 }
 
-
 // Tweets an Hand der Suchparameter über die TwitterAPI heraussuchen
 function searchTweets(searchparams) {
     return new Promise((resolve, reject) => {
@@ -125,7 +124,6 @@ function searchTweets(searchparams) {
         });
     });
 }
-
 
 /*
 Jeder Tweet wird als Knoten gespeichert.
@@ -173,7 +171,6 @@ async function resolveTweets(data) {
     return lowestId;
 }
 
-
 // Einzelnen Tweet an Hand seiner ID über die TwitterAPI heraussuchen
 function searchTweet(tweetID_parent, tweetID_origin) {
     return new Promise((resolve, reject) => {
@@ -186,7 +183,6 @@ function searchTweet(tweetID_parent, tweetID_origin) {
         });
     });
 }
-
 
 // Tweet speichern
 function resolveTweet(data, type){
@@ -204,7 +200,6 @@ function resolveTweet(data, type){
         createLink(data.origin, tweetId_str, type, 3);
 }
 
-
 // Knoten hinzufügen
 function createNode(tweetID, userName, retweets, favorites, created_at, tweetText){
     // Link generieren
@@ -217,7 +212,6 @@ function createNode(tweetID, userName, retweets, favorites, created_at, tweetTex
     }
 }
 
-
 // Kante hinzufügen
 function createLink(tweetID_source, tweetID_target , type, value){
     //Doppelte suchen
@@ -229,7 +223,6 @@ function createLink(tweetID_source, tweetID_target , type, value){
         res.links.push({source:tweetID_source, target: tweetID_target, type: type, value: value});
     }
 }
-
 
 // Exporte des Moduls
 module.exports = {

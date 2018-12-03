@@ -11,6 +11,17 @@ function postSearchrequest(){
             $("#graph").empty();
             $('#listgroup1').empty();
             $('#listgroup2').empty();
+            start();
         }
+    });
+}
+
+function start(){
+    $.get("http://localhost:3000/tweets", function(data){
+        const res = JSON.parse(data);
+        if(res.nodes.length > 0)
+            createList();
+        else
+            start();
     });
 }

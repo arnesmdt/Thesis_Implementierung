@@ -64,7 +64,6 @@ function createList(){
 
 // Listeneintrag erstellen
 function createListGroupItem(node, listgroup){
-
     let newItem = true;
     /*
     Prüfen, ob es schon einen Listeneintrag mit der ID gibt.
@@ -152,7 +151,6 @@ function clearList() {
 function clearlistgroup2() {
     $('#listgroup2').empty();
 }
-
 
 function showalert(message, alerttype) {
     $('#alert_placeholder').append('<div id="alertdiv" class="alert ' +  alerttype + '"><a class="close" data-dismiss="alert">×</a><span>'+ message +'</span></div>');

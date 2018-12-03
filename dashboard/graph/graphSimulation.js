@@ -1,6 +1,4 @@
-
 function startSimulation(nodes, links){
-
     const svg = d3.select("body").select("svg"),
         width = +svg.attr("width"),
         height = +svg.attr("height");
@@ -75,7 +73,6 @@ function startSimulation(nodes, links){
             .on("drag", dragged)
             .on("end", dragended));
 
-
     node.on('dblclick' , function(node){
         // Listeneintrag erstellen
         const added = createListGroupItem(node, '#listgroup2');
@@ -85,13 +82,13 @@ function startSimulation(nodes, links){
             showalert('Knoten ' + node.id + ' bereits vorhanden! ','alert-danger');
     });
 
-
     simulation
         .nodes(nodes)
         .on("tick", ticked);
 
     simulation.force("link")
         .links(links);
+
 
     function ticked() {
         link
@@ -109,7 +106,6 @@ function startSimulation(nodes, links){
         node.attr("cx", function(d) { return d.x = Math.max(radius, Math.min(width - radius, d.x)); })
             .attr("cy", function(d) { return d.y = Math.max(radius, Math.min(height - radius, d.y)); });
     }
-
 
     function dragstarted(d) {
         if (!d3.event.active) simulation.alphaTarget(0.3).restart();
