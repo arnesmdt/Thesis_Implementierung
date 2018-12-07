@@ -11,6 +11,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+
 </head>
 <body>
 
@@ -106,7 +108,44 @@
                                 <option value="1">Einzelne Knoten einblenden</option>
                             </select>
                         </div>
-                        <div class="col-1"></div>
+                        <div class="col-1" style="padding-right: 10px;padding-left: 10px;">
+                            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#infoModal"><i class="fa fa-info-circle"></i> Info</button>
+                        </div>
+                        <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Informationen für den Anwender</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <ul style="padding-right: 5%">
+                                            <li>
+                                                Vorgenommene Konfigurationen werden wirksam, wenn der Graph über
+                                                den Button "Graph aktulisieren" neu gezeichnet wird.
+                                            </li>
+                                            <br>
+                                            <li>
+                                                Wird der Graph aktualisert, werden die gesetzten Markierungen entfernt.
+                                            </li>
+                                            <br>
+                                            <li>
+                                                Per Doppelklick auf einen Knoten kann der zugewiesene Beitrag der Liste
+                                                "ausgewählte Beiträge" hinzugefügt werden. Ein Knoten kann nicht mehrmals
+                                                hinzugefügt werden.
+                                            </li>
+                                            <br>
+                                            <li>
+                                                Solange der Mauszeiger auf einen Knoten zeigt, öffnet sich ein Popup-Fenster
+                                                mit zusätzlichen Inromationen.
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-2">
                             <button type="button" class="btn btn-primary float-right" onclick="draw()">Graph aktualisieren</button>
                         </div>
