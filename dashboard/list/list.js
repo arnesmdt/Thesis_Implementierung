@@ -99,16 +99,16 @@ function createListGroupItem(node, listgroup){
             "<p >" + node.text + "</p> " +
             "</div></div>" +
             "<div class='row'>" +
-            "<div class='col-6'><p>Allgemeine Informationen: </p></div>" +
-            "<div class='col-2'><p>sentiment: <span style='font-weight: bold;'>" + node.sentiment + "</span></p></div> " +
-            "<div class='col-2'><p>Retweets: <span style='font-weight: bold;'>" + node.retweets + "</span></p></div> " +
-            "<div class='col-2'><p>Favoriten: <span style='font-weight: bold;'>" + node.favorites + "</span></p></div> " +
+            "<div class='col-lg-6'><p>Allgemeine Informationen: </p></div>" +
+            "<div class='col-lg-2'><p>sentiment: <span style='font-weight: bold;'>" + node.sentiment + "</span></p></div> " +
+            "<div class='col-lg-2'><p>Retweets: <span style='font-weight: bold;'>" + node.retweets + "</span></p></div> " +
+            "<div class='col-lg-2'><p>Favoriten: <span style='font-weight: bold;'>" + node.favorites + "</span></p></div> " +
             "</div>" +
             "<div class='row'>" +
-            "<div class='col-6'><p>Informationen aus dem Graph: </p></div> " +
-            "<div class='col-2'><p>Verbindungen: <span style='font-weight: bold;'>" + node.degree + "</span></p></div>" +
-            "<div class='col-2'><p>In-Degree: <span style='font-weight: bold;'>" + node.indegree + "</span></p></div>" +
-            "<div class='col-2'><p>Out-Degree: <span style='font-weight: bold;'>" + node.outdegree + "</span></p></div>" +
+            "<div class='col-lg-6'><p>Informationen aus dem Graph: </p></div> " +
+            "<div class='col-lg-2'><p>Verbindungen: <span style='font-weight: bold;'>" + node.degree + "</span></p></div>" +
+            "<div class='col-lg-2'><p>In-Degree: <span style='font-weight: bold;'>" + node.indegree + "</span></p></div>" +
+            "<div class='col-lg-2'><p>Out-Degree: <span style='font-weight: bold;'>" + node.outdegree + "</span></p></div>" +
             "</div>" +
             "<small><a href='" + node.url + "' target='_blank'>" + node.url + "</a></small>" +
             "</div>";

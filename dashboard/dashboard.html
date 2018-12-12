@@ -20,7 +20,7 @@
     <iframe name="myiframe" style="display:none;"></iframe>
     <form target="myiframe" onsubmit="postSearchrequest()">
         <div class="row" style="padding-bottom: 30px;padding-top: 30px">
-            <div class="col-6">
+            <div class="col-lg-6">
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="searchInput">Suchbegriff eingeben</span>
@@ -28,13 +28,13 @@
                     <input type="text" class="form-control"  id="searchTerm" aria-describedby="searchInput" required>
                 </div>
             </div>
-            <div class="col-3" style="display: flex;align-items: center;">
+            <div class="col-lg-3" style="display: flex;align-items: center;">
             <input type="range" class="custom-range" min="0" max="500" step="10" id="searchRange" value="100" oninput="searchRangeOutput.value = searchRange.value">
             </div>
-            <div class="col-2" style="display: flex;align-items: center;">
+            <div class="col-lg-2" style="display: flex;align-items: center;">
                 <span class="badge badge-pill badge-secondary">Anzahl Tweets ~ <output id="searchRangeOutput">100</output></span>
             </div>
-            <div class="col-1">
+            <div class="col-lg-1">
                 <button type="submit" class="btn btn-primary float-right" id="sendButton">Absenden</button>
             </div>
         </div>
@@ -53,7 +53,7 @@
             <div class="tab-content" id="nav-tabContent">
                 <div class="tab-pane fade show active" id="nav-graph" role="tabpanel" aria-labelledby="nav-home-tab">
                     <div class="row" style="padding-bottom: 30px;padding-top: 30px">
-                        <div class="col-3" >
+                        <div class="col-lg-3" >
                             <div class="card" style="border: none">
                                 <button class="btn btn-outline-secondary" type="button" data-toggle="collapse" data-target="#edges" aria-expanded="true" aria-controls="edges">
                                     Verbindungen
@@ -79,7 +79,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-3" >
+                        <div class="col-lg-3" >
                             <div class="card" style="border: none">
                                 <button class="btn btn-outline-secondary" type="button" data-toggle="collapse" data-target="#nodes" aria-expanded="true" aria-controls="nodes">
                                     Stimmungen
@@ -102,13 +102,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-3">
+                        <div class="col-lg-3">
                             <select class="custom-select" id="seperateNodes">
                                 <option selected value="0">Einzelne Knoten ausblenden</option>
                                 <option value="1">Einzelne Knoten einblenden</option>
                             </select>
                         </div>
-                        <div class="col-1" style="padding-right: 10px;padding-left: 10px;">
+                        <div class="col-lg-1" style="padding-right: 10px;padding-left: 10px;">
                             <button type="button" class="btn btn-info" data-toggle="modal" data-target="#infoModal"><i class="fa fa-info-circle"></i> Info</button>
                         </div>
                         <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -139,14 +139,14 @@
                                             <br>
                                             <li>
                                                 Solange der Mauszeiger auf einen Knoten zeigt, öffnet sich ein Popup-Fenster
-                                                mit zusätzlichen Inromationen.
+                                                mit zusätzlichen Informationen.
                                             </li>
                                         </ul>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2">
                             <button type="button" class="btn btn-primary float-right" onclick="draw()">Graph aktualisieren</button>
                         </div>
                     </div>
